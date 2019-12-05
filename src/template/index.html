@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>react-admin</title>
+</head>
+
+<body>
+  <div id="app"></div>
+</body>
+
+<% if (htmlWebpackPlugin.options.theme) { %>
+<script>
+  //最后引入
+  const link = document.createElement('link')
+  link.rel = 'stylesheet/less'
+  link.type = 'text/css'
+  link.href = 'theme/theme.less'
+  document.getElementsByTagName('head')[0].appendChild(link)
+
+  window.less = {
+    async: false,
+    env: 'production',
+    modifyVars: {//cache color
+      // '@primary-color': "blue",
+    },
+    javascriptEnabled: true
+  };
+</script>
+<script type="text/javascript" src="https://cdn.bootcss.com/less.js/3.10.2/less.min.js"></script>
+<% } %>
+
+</html>
