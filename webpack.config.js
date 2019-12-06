@@ -62,15 +62,15 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          'style-loader', // MiniCssExtractPlugin or style-loader
-          // {
-          //   loader: MiniCssExtractPlugin.loader,
-          //   options: {
-          //     // you can specify a publicPath here
-          //     // by default it uses publicPath in webpackOptions.output
-          //     hmr: ENV === 'development',
-          //   },
-          // },
+          // 'style-loader', // MiniCssExtractPlugin or style-loader
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              // you can specify a publicPath here
+              // by default it uses publicPath in webpackOptions.output
+              hmr: ENV === 'development',
+            },
+          },
           'css-loader',
           'postcss-loader',
 
@@ -80,20 +80,20 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          'style-loader', // MiniCssExtractPlugin or style-loader
-          // {
-          //   loader: MiniCssExtractPlugin.loader,
-          //   options: {
-          //     // you can specify a publicPath here
-          //     // by default it uses publicPath in webpackOptions.output
-          //     hmr: ENV === 'development',
-          //   },
-          // },
+          // 'style-loader', // MiniCssExtractPlugin or style-loader
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              // you can specify a publicPath here
+              // by default it uses publicPath in webpackOptions.output
+              hmr: ENV === 'development',
+            },
+          },
           { loader: 'css-loader', options: { modules: true, importLoaders: 1 } },
           'postcss-loader',
         ],
         exclude: /node_modules/
-      },
+      }
     ]
   },
   plugins: [

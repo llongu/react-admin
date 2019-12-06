@@ -2,54 +2,51 @@
   margin: 0;
   padding: 0;
 }
-
 :root {
   --test: linen;
 }
-.none {
-  display: none;
+body,
+html {
+  background: var(--test);
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
-body {
-  display: none;
+
+:global #app,
+:global section {
+  background: var(--test);
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
-:global {
-  body,
-  html,
-  #app,
-  section {
-    background: var(--test);
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
-  .ant-layout {
-    overflow-y: auto;
-  }
-  .ant-layout-content {
-    min-height: auto !important;
-  }
-  .ant-menu-item > a {
-    display: inline-block;
-  }
-  .ant-layout .trigger {
-    font-size: 18px;
-    line-height: 64px;
-    padding: 0 24px;
-    cursor: pointer;
-    transition: color 0.3s;
-  }
+:global .ant-layout {
+  overflow-y: auto;
+}
+:global .ant-layout-content {
+  min-height: auto !important;
+}
+:global .ant-menu-item > a {
+  display: inline-block;
+}
+:global .ant-layout .trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
 
-  .ant-layout .trigger:hover {
-    color: #1890ff;
-  }
+:global .ant-layout .trigger:hover {
+  color: #1890ff;
+}
 
-  .ant-layout-sider-children .logo {
-    height: 32px;
-    background: rgba(255, 255, 255, 0.2);
-    margin: 16px;
-  }
+:global .ant-layout-sider-children .logo {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px;
+}
 
-  .ant-breadcrumb {
-    margin: 16px;
-  }
+:global .ant-breadcrumb {
+  margin: 16px;
 }

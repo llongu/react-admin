@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { List, message, Avatar, Spin } from "antd";
-import InfiniteScroll from "react-infinite-scroller";
-
+import React, { useState } from "react"
+import { List, message, Avatar, Spin } from "antd"
+import InfiniteScroll from "react-infinite-scroller"
+import Styles from "./list.css"
 const staticData = [
   {
     gender: "female",
@@ -33,59 +33,51 @@ const staticData = [
     email: "lillie.webb@example.com",
     nat: "AU"
   }
-];
+]
 const InfiniteListExample = () => {
   const [listState, setListState] = useState({
     data: [...staticData],
     loading: false,
     hasMore: true
-  });
+  })
 
   const handleInfiniteOnLoad = () => {
-    console.log("handleInfiniteOnLoad");
-    let { data } = listState;
+    console.log("handleInfiniteOnLoad")
+    let { data } = listState
     setListState({
       ...listState,
       loading: true
-    });
+    })
     if (data.length > 50) {
-      message.warning("Infinite List loaded all");
+      message.warning("Infinite List loaded all")
       setListState({
         ...listState,
         hasMore: false,
         loading: false
-      });
-      return;
+      })
+      return
     }
 
     setTimeout(() => {
-      data = data.concat(staticData);
+      data = data.concat(staticData)
       setListState({
         ...listState,
         data,
         loading: false
-      });
-    }, 2000);
-  };
+      })
+    }, 2000)
+  }
 
   return (
     <>
       <div className="demo-infinite-container">
-        <InfiniteScroll
-          initialLoad={true}
-          pageStart={0}
-          loadMore={handleInfiniteOnLoad}
-          hasMore={!listState.loading && listState.hasMore}
-          useWindow={false}
-        >
+        <InfiniteScroll initialLoad={true} pageStart={0} loadMore={handleInfiniteOnLoad} hasMore={!listState.loading && listState.hasMore} useWindow={false}>
           <List
             dataSource={listState.data}
             renderItem={(item, index) => (
               <List.Item key={index}>
                 <List.Item.Meta
-                  avatar={
-                    <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                  }
+                  avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
                   title={<a href="https://ant.design">{item.name.last}</a>}
                   description={item.email}
                 />
@@ -94,20 +86,15 @@ const InfiniteListExample = () => {
             )}
           >
             {listState.loading && listState.hasMore && (
-              <div className="demo-loading-container">
+              <div className={Styles["demo-loading-container"]}>
                 <Spin />
               </div>
             )}
           </List>
         </InfiniteScroll>
       </div>
-      <style jsx>{`
-        .demo-loading-container {
-          text-align: center;
-        }
-      `}</style>
     </>
-  );
-};
+  )
+}
 
-export default InfiniteListExample;
+export default InfiniteListExample

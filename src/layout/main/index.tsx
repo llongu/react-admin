@@ -7,17 +7,14 @@ import Header from "@/components/Header"
 import Sider from "@/components/Sider"
 import Breadcrumb from "@/components/Breadcrumb"
 import DrawerSetting from "@/components/DrawerSetting"
-
 import { InsProgressBar } from "react-ins-progress-bar"
-import { style } from "./main.css"
-
-const main = (components: { location: { pathname: String }; route: { children: { component: React.FunctionComponent<{}> }[] } }) => {
+import "./main.css"
+const Main = (components: { location: { pathname: String }; route: { children: { component: React.FunctionComponent<{}> }[] } }) => {
   return (
     <Layout>
       <Sider />
       <Layout>
         <Header />
-
         <Breadcrumb {...components} />
 
         <Content
@@ -38,4 +35,4 @@ const main = (components: { location: { pathname: String }; route: { children: {
   )
 }
 
-export default main
+export default Main

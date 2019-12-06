@@ -3,7 +3,8 @@ import { Link } from "react-router-dom"
 import { Layout, Menu, Icon, Avatar } from "antd"
 import { Dropdown } from "antd"
 const { Header } = Layout
-import { styles } from "./css"
+import Styles from "./index.css"
+console.log(Styles)
 export default memo(() => {
   const collapsed = false
 
@@ -36,18 +37,13 @@ export default memo(() => {
     <>
       <Header style={{ background: "#fff", padding: 0 }}>
         <Icon className="trigger" type={collapsed ? "menu-unfold" : "menu-fold"} onClick={toggle} />
-        <Dropdown
-          className={`dropdown-main ${styles.props.className}`}
-          overlay={menuHeaderDropdown}
-          overlayClassName="dropdown-menu"
-        >
-          <span className="tests">
-            <Avatar size="large" icon="user" alt="avatar" className={`${styles.props.className}`} />
+        <Dropdown className={Styles["dropdownMain"]} overlay={menuHeaderDropdown} overlayClassName="dropdown-menu">
+          <span>
+            <Avatar size="large" icon="user" alt="avatar" />
             <span>test</span>
           </span>
         </Dropdown>
       </Header>
-      {styles.props.children}
     </>
   )
 })
