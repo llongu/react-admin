@@ -58,7 +58,6 @@ module.exports = {
           name: 'fonts/[name].[hash:7].[ext]'
         }
       },
-
       {
         test: /\.css$/,
         use: [
@@ -73,12 +72,10 @@ module.exports = {
           },
           'css-loader',
           'postcss-loader',
-
         ],
-        include: /node_modules/
       },
       {
-        test: /\.css$/,
+        test: /\.less$/,
         use: [
           // 'style-loader', // MiniCssExtractPlugin or style-loader
           {
@@ -89,11 +86,43 @@ module.exports = {
               hmr: ENV === 'development',
             },
           },
-          { loader: 'css-loader', options: { modules: true, importLoaders: 1 } },
+          {
+            loader: 'css-loader', options: {
+              modules: true,
+            }
+          },
           'postcss-loader',
+          {
+            loader: 'less-loader', options: {
+              javascriptEnabled: true,
+            }
+          },
         ],
-        exclude: /node_modules/
-      }
+        // exclude: path.resolve(__dirname, "node_modules/antd")
+      },
+      // {
+      //   test: /\.less$/,
+      //   use: [
+      //     // 'style-loader', // MiniCssExtractPlugin or style-loader
+      //     {
+      //       loader: MiniCssExtractPlugin.loader,
+      //       options: {
+      //         // you can specify a publicPath here
+      //         // by default it uses publicPath in webpackOptions.output
+      //         hmr: ENV === 'development',
+      //       },
+      //     },
+      //     'css-loader',
+      //     'postcss-loader',
+      //     {
+
+      //       loader: 'less-loader', options: {
+      //         javascriptEnabled: true,
+      //       }
+      //     },
+      //   ],
+      //   include: path.resolve(__dirname, "node_modules/antd"),
+      // },
     ]
   },
   plugins: [

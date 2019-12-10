@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { List, message, Avatar, Spin } from "antd"
 import InfiniteScroll from "react-infinite-scroller"
-import Styles from "./list.css"
+import Styles from "./list.less"
 const staticData = [
   {
     gender: "female",

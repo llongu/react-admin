@@ -3,8 +3,8 @@ import { Link } from "react-router-dom"
 import { Layout, Menu, Icon, Avatar } from "antd"
 import { Dropdown } from "antd"
 const { Header } = Layout
-import Styles from "./index.css"
-console.log(Styles)
+import Styles from "./index.less"
+
 export default memo(() => {
   const collapsed = false
 
@@ -37,9 +37,9 @@ export default memo(() => {
     <>
       <Header style={{ background: "#fff", padding: 0 }}>
         <Icon className="trigger" type={collapsed ? "menu-unfold" : "menu-fold"} onClick={toggle} />
-        <Dropdown className={Styles["dropdownMain"]} overlay={menuHeaderDropdown} overlayClassName="dropdown-menu">
+        <Dropdown className={Styles.dropdownMain} overlay={menuHeaderDropdown} overlayClassName="dropdown-menu">
           <span>
-            <Avatar size="large" icon="user" alt="avatar" />
+            <Avatar size="large" icon="user" alt="avatar" className={Styles.antAvatar} />
             <span>test</span>
           </span>
         </Dropdown>

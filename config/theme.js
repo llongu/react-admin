@@ -1,6 +1,6 @@
 /**
- *  antd-theme-generator 编译  配置文件 theme.js
- *  引入 antd默认文件和自己覆盖的文件
+ *  antd-theme-generator 编译  
+ *  配置文件 theme.js 引入 antd默认文件和自己覆盖的文件
  *  生成 theme.less
  *  html 引入 less.js theme.less  (HtmlWebpackPlugin  theme 开启)
  *  配置 lees javscript
@@ -28,11 +28,12 @@ const options = {
   mainLessFile: path.join(__dirname, '../src/theme/main.less'),//自己的样式
   themeVariables: [ //需要动态切换的主题变量
     '@primary-color',
-    '@secondary-color',
-    '@text-color',
-    '@text-color-secondary',
-    '@heading-color',
-    '@layout-body-background'
+    '@btn-primary-bg',
+    '@menu-dark-item-active-bg',
+    '@link-color',
+    "@icon-color",
+    '@border-radius-base',
+    '@border-color-base',
   ],
   indexFileName: 'index.html',
   outputFilePath: createOutPutFile(fs, path), //生成页面引入的主题变量文件
