@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { List, Avatar, Button, Skeleton } from "antd"
 
-const staticList: Array<Object> = [
+const staticList: Array<Record<string, any>> = [
   { gender: "male", name: { title: "Mr", first: "آرمین", last: "موسوی" }, email: "armyn.mwswy@example.com", nat: "IR" },
   { gender: "male1", name: { title: "Mr", first: "آرمین", last: "موسوی" }, email: "armyn.mwswy@example.com", nat: "IR" },
   { gender: "male2", name: { title: "Mr", first: "آرمین", last: "موسوی" }, email: "armyn.mwswy@example.com", nat: "IR" }
@@ -26,7 +26,7 @@ export default () => {
       list: [...listState.list, ...SkeletonLoadingList]
     })
 
-    //request
+    // request
     setTimeout(() => {
       setListState({
         ...listState,

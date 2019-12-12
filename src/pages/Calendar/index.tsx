@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Calendar, Badge } from "antd"
 
-//click year render month
+// click year render month
 function getMonthData(value) {
   console.log(value)
   if (value.month() === 8) {
@@ -39,7 +39,7 @@ export default () => {
     console.log("dayData change")
   }, [dayData])
 
-  //clik month render day
+  // clik month render day
   function getListData(value) {
     let listData
     switch (value.date()) {

@@ -1,40 +1,37 @@
-import NotFound from "@/pages/404";
-import { FunctionComponent } from "react";
-import { insProgress } from "react-ins-progress-bar";
+import NotFound from "@/pages/404"
+import { FunctionComponent } from "react"
+import { insProgress } from "react-ins-progress-bar"
 interface routeItem {
-  path: String;
+  path: string
   component: Function;
-  children: Array<Object>;
+  children: Array<Record<string, any>>;
 }
-function matchRoutes(
-  pathname: String,
-  route: Array<{ component: FunctionComponent }>
-) {
-  insProgress.start();
+function matchRoutes(pathname: string, route: Array<{ component: FunctionComponent }>) {
+  insProgress.start()
 
-  let components = null;
-  function deepMatch(routeArr: Array<Object>) {
+  let components = null
+  function deepMatch(routeArr: Array<Record<string, any>>) {
     if (!Array.isArray(routeArr)) {
-      throw new Error("matchRoutes error");
+      throw new Error("matchRoutes error")
     }
     routeArr.forEach((item: routeItem, index) => {
       if (item.path === pathname && !components) {
-        components = item.component;
+        components = item.component
       } else if (Array.isArray(item.children) && !components) {
-        deepMatch(item.children);
+        deepMatch(item.children)
       }
-    });
+    })
   }
 
-  deepMatch(route);
+  deepMatch(route)
   setTimeout(() => {
-    insProgress.finish();
-  }, 10);
+    insProgress.finish()
+  }, 10)
 
   if (!components) {
-    return NotFound;
+    return NotFound
   }
 
-  return components;
+  return components
 }
-export default matchRoutes;
+export default matchRoutes

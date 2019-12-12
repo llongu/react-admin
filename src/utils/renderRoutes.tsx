@@ -4,16 +4,16 @@ import { Route, Redirect, Switch, RouteComponentProps, RouteProps } from "react-
 
 interface routeParam extends RouteProps {
   key: any
-  requiresAuth?: Boolean
+  requiresAuth?: boolean;
   component: FunctionComponent<any>
 }
 
-const renderRoutes = (routes: Array<Object>, authed: Boolean, authPath = "/login", extraProps = {}, switchProps = {}) => {
+const renderRoutes = (routes: Array<Record<string, any>>, authed: boolean, authPath = "/login", extraProps = {}, switchProps = {}) => {
   return routes ? (
-    //组件加载很快的情况下 Suspense 会一闪而过 / react-loadable
+    // 组件加载很快的情况下 Suspense 会一闪而过 / react-loadable
     // <Suspense fallback={<Loading />}></Suspense>
     <Switch {...switchProps}>
-      {routes.map((route: routeParam, i: Number) => (
+      {routes.map((route: routeParam, i: number) => (
         <Route
           key={route.key || i}
           path={route.path}

@@ -1,5 +1,5 @@
-import React from "react";
+import React from "react"
 
-const home = () => <div>404</div>;
+const home = () => <div>404</div>
 
-export default home;
+export default home

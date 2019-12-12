@@ -9,7 +9,7 @@ import Breadcrumb from "@/components/Breadcrumb"
 import DrawerSetting from "@/components/DrawerSetting"
 import { InsProgressBar } from "react-ins-progress-bar"
 import "./main.css"
-const Main = (components: { location: { pathname: String }; route: { children: { component: React.FunctionComponent<{}> }[] } }) => {
+const Main = (components: { location: { pathname: string }; route: { children: { component: React.FunctionComponent<{}> }[] } }) => {
   return (
     <Layout>
       <Sider />

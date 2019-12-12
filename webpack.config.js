@@ -1,12 +1,12 @@
 const path = require('path')
 const resolve = require('./config/resolve.config')
-const theme = require('./config/theme')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 // speed-measure-webpack-plugin 分析打包耗时
-
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');//css 分离
+
+const themePlugin = require('./src/theme/theme.js')
 
 const ENV = process.env.NODE_ENV
 const hashType = ENV === 'development' ? 'hash' : 'chunkhash'
@@ -87,42 +87,20 @@ module.exports = {
             },
           },
           {
-            loader: 'css-loader', options: {
+            loader: 'css-loader',
+            options: {
               modules: true,
             }
           },
           'postcss-loader',
           {
-            loader: 'less-loader', options: {
+            loader: 'less-loader',
+            options: {
               javascriptEnabled: true,
             }
-          },
-        ],
-        // exclude: path.resolve(__dirname, "node_modules/antd")
-      },
-      // {
-      //   test: /\.less$/,
-      //   use: [
-      //     // 'style-loader', // MiniCssExtractPlugin or style-loader
-      //     {
-      //       loader: MiniCssExtractPlugin.loader,
-      //       options: {
-      //         // you can specify a publicPath here
-      //         // by default it uses publicPath in webpackOptions.output
-      //         hmr: ENV === 'development',
-      //       },
-      //     },
-      //     'css-loader',
-      //     'postcss-loader',
-      //     {
-
-      //       loader: 'less-loader', options: {
-      //         javascriptEnabled: true,
-      //       }
-      //     },
-      //   ],
-      //   include: path.resolve(__dirname, "node_modules/antd"),
-      // },
+          }
+        ]
+      }
     ]
   },
   plugins: [
@@ -135,10 +113,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: true,
       minify: false,
-      template: './src/template/index.html',
-      theme: theme.openTheme  //主题配置
+      template: './src/template/index.html'
     }),
-
+    themePlugin
   ]
 
 }

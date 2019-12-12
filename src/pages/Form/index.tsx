@@ -20,7 +20,7 @@ interface UserFormProps extends FormComponentProps {
   checkboxGroup: Array<string>
 }
 
-//layout
+// layout
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -44,7 +44,7 @@ const tailFormItemLayout = {
   }
 }
 
-//data
+// data
 const residences = [
   {
     value: "zhejiang",
@@ -83,7 +83,7 @@ const residences = [
 const MyForm = (props: FormComponentProps) => {
   const { getFieldDecorator } = props.form
 
-  //validator
+  // validator
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     props.form.validateFields((err, values) => {
@@ -110,7 +110,7 @@ const MyForm = (props: FormComponentProps) => {
     }
   }
 
-  //data
+  // data
   const prefixSelector = getFieldDecorator("prefix", {
     initialValue: "86"
   })(
@@ -120,7 +120,7 @@ const MyForm = (props: FormComponentProps) => {
     </Select>
   )
 
-  //number change  validateStatus
+  // number change  validateStatus
   function validatePrimeNumber(
     number: number
   ): {

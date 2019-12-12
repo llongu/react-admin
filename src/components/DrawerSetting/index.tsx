@@ -3,7 +3,7 @@ import { Drawer, Button, Icon, Input } from "antd"
 import Styles from "./index.less"
 const DrawerSetting = () => {
   const [state, setState] = useState({
-    visible: true,
+    visible: false,
     themeColor: "#ff0080"
   })
 

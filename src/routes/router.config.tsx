@@ -14,7 +14,7 @@ function LoadableComponent(loader) {
 
 const LayoutMain = LoadableComponent(() => import(/* webpackChunkName: "layoutMain" */ "@/layout/Main"))
 const Login = LoadableComponent(() => import(/* webpackChunkName: "Login" */ "@/pages/login"))
-const Home = LoadableComponent(() => import(/*webpackChunkName: "Home"*/ "@/pages/home"))
+const Home = LoadableComponent(() => import(/* webpackChunkName: "Home"*/ "@/pages/home"))
 const LoadList = LoadableComponent(() => import(/* webpackChunkName: "LoadList" */ "@/pages/List/load-list"))
 const ScrollLoadList = LoadableComponent(() => import(/* webpackChunkName: "ScrollLoadList" */ "@/pages/List/scroll-load-list"))
 const Calendar = LoadableComponent(() => import(/* webpackChunkName: "Calendar" */ "@/pages/Calendar"))

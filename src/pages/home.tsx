@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState, useReducer, useCallback } from "react"
-import imgs from "@S/1.jpg"
+import imgs from "@static/1.jpg"
 import MyContext from "@/models/context"
 import { Button } from "antd"
-//Suspense
+// Suspense
 // function go() {
 //   return new Promise(resolve => {
 //     setTimeout(() => {
@@ -13,24 +13,27 @@ import { Button } from "antd"
 // let num = 0
 
 const home = () => {
-  //Provider set value, useContext or  <Consumer>{(value)=>{ get... }}</Consumer> getValue
+  const a = 0
+  if (a == 0) {
+  }
+  // Provider set value, useContext or  <Consumer>{(value)=>{ get... }}</Consumer> getValue
   const ProviderValue = useContext(MyContext)
   console.log(ProviderValue)
-  //useEffect
+  // useEffect
   useEffect(() => {
     console.log("home")
   })
 
-  //useState
+  // useState
   let [count, setCount] = useState(0)
 
-  //useReducer
+  // useReducer
   const initState = {
     num: 0,
     status: false
   }
 
-  //Suspense
+  // Suspense
   // async function fetchs() {
   //   const data = await go()
   //   num++

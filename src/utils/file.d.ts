@@ -6,3 +6,6 @@ declare module "*.gif"
 declare module "*.bmp"
 declare module "*.tiff"
 declare module "*.less"
+interface Window {
+  less: any
+}
