@@ -1,5 +1,6 @@
-import React, { useState } from "react"
+import React, { useState, ReactElement, useEffect } from "react"
 import { Table } from "antd"
+import request from "@utils/request"
 
 const columns = [
   {
@@ -15,24 +16,24 @@ const columns = [
     dataIndex: "address"
   }
 ]
-const data = []
-for (let i = 0; i < 46; i++) {
-  data.push({
-    key: i,
-    name: `Edward King ${i}`,
-    age: 32,
-    address: `London, Park Lane no. ${i}`
-  })
-}
 
-export default () => {
+export default (): ReactElement<HTMLElement> => {
   const [state, setState] = useState({
+    tableData: [],
     selectedRowKeys: [] // Check here to configure the default column
   })
 
-  const onSelectChange = selectedRowKeys => {
+  useEffect(() => {
+    async function getData(): Promise<void> {
+      const response = await request.post("api/table/query")
+      console.log(response)
+    }
+    getData()
+  }, [])
+
+  const onSelectChange = (selectedRowKeys): void => {
     console.log("selectedRowKeys changed: ", selectedRowKeys)
-    setState({ selectedRowKeys })
+    setState({ ...state, selectedRowKeys })
   }
 
   const { selectedRowKeys } = state
@@ -44,8 +45,9 @@ export default () => {
       {
         key: "all-data",
         text: "Select All Data",
-        onSelect: () => {
+        onSelect: (): void => {
           setState({
+            ...state,
             selectedRowKeys: [...Array(46).keys()] // 0...45
           })
         }
@@ -53,7 +55,7 @@ export default () => {
       {
         key: "odd",
         text: "Select Odd Row",
-        onSelect: changableRowKeys => {
+        onSelect: (changableRowKeys: []): void => {
           let newSelectedRowKeys = []
           newSelectedRowKeys = changableRowKeys.filter((key, index) => {
             if (index % 2 !== 0) {
@@ -61,11 +63,11 @@ export default () => {
             }
             return true
           })
-          setState({ selectedRowKeys: newSelectedRowKeys })
+          setState({ ...state, selectedRowKeys: newSelectedRowKeys })
         }
       }
     ]
   }
 
-  return <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+  return <Table rowSelection={rowSelection} columns={columns} dataSource={state.tableData} />
 }

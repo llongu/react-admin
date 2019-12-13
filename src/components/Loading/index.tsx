@@ -1,6 +1,6 @@
-import React, { useLayoutEffect, useEffect } from "react"
+import React, { ReactElement } from "react"
 
-export default () => {
+export default function Loading(): ReactElement<HTMLElement> {
   // useEffect(() => {})
   // useLayoutEffect((): any => {
   //   // return false

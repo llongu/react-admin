@@ -1,16 +1,14 @@
-import React, { memo } from "react"
-import { Link } from "react-router-dom"
-import { Layout, Menu, Icon } from "antd"
+import React, { memo, ReactElement } from "react"
+import { Layout, Menu } from "antd"
 import meunMap from "@/utils/reanderMenus"
 const { Sider } = Layout
-const { SubMenu } = Menu
 
-export default memo(() => {
+function Siders(): ReactElement<HTMLElement> {
   const collapsed = false
   let selectedKeys = JSON.parse(localStorage.getItem("selectedKeys")) || ["1"]
   let opendKeys = [selectedKeys[0].split("")[0]]
 
-  const menuSelected = (props: { selectedKeys: string[] }) => {
+  const menuSelected = (props: { selectedKeys: string[] }): void => {
     localStorage.setItem("selectedKeys", JSON.stringify(props.selectedKeys))
     selectedKeys = props.selectedKeys
     opendKeys = [selectedKeys[0].split("")[0]]
@@ -24,4 +22,6 @@ export default memo(() => {
       </Menu>
     </Sider>
   )
-})
+}
+
+export default memo(Siders)

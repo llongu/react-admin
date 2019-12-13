@@ -1,4 +1,3 @@
-<font size=5>
 ```
   ├─.babelrc
   ├─.prettierrc
@@ -42,7 +41,7 @@
   | ├─layout
   | | ├─main    ----------------------------------------  主要Layout文件
   | | | ├─index.tsx
-  | | | └main.css              
+  | | | └main.css
   | ├─components
   | | ├─Sider
   | | | └index.tsx
@@ -50,7 +49,7 @@
   | | | └index.tsx
   | | ├─Header
   | | | └index.tsx
-  | | ├─ErrorBoundary ----------------------------------  全局错误捕获组件  
+  | | ├─ErrorBoundary ----------------------------------  全局错误捕获组件
   | | | └index.tsx
   | | ├─Breadcrumb   -----------------------------------  面包屑渲染
   | | | └index.tsx
@@ -58,5 +57,6 @@
   | ├─dev.js
   | ├─prod.js
   | └resolve.config.js
-  
 ```
+
+my-web-report

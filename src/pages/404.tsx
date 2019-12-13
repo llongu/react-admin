@@ -1,5 +1,5 @@
-import React from "react"
+import React, { ReactElement } from "react"
 
-const home = () => <div>404</div>
+const home = (): ReactElement<HTMLElement> => <div>404</div>
 
 export default home

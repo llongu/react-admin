@@ -1,7 +1,7 @@
-import React, { useState } from "react"
+import React, { useState, ReactElement } from "react"
 import { List, Avatar, Button, Skeleton } from "antd"
 
-const staticList: Array<Record<string, any>> = [
+const staticList: Array<object> = [
   { gender: "male", name: { title: "Mr", first: "آرمین", last: "موسوی" }, email: "armyn.mwswy@example.com", nat: "IR" },
   { gender: "male1", name: { title: "Mr", first: "آرمین", last: "موسوی" }, email: "armyn.mwswy@example.com", nat: "IR" },
   { gender: "male2", name: { title: "Mr", first: "آرمین", last: "موسوی" }, email: "armyn.mwswy@example.com", nat: "IR" }
@@ -12,14 +12,14 @@ const SkeletonLoadingList = [
   { loading: true, name: {} },
   { loading: true, name: {} }
 ]
-export default () => {
+export default (): ReactElement<HTMLElement> => {
   const [listState, setListState] = useState({
     moreloading: false,
     skeletonLoading: false, //
     list: [...staticList]
   })
 
-  const onLoadMore = () => {
+  const onLoadMore = (): void => {
     setListState({
       ...listState,
       moreloading: true,
@@ -36,7 +36,7 @@ export default () => {
     }, 2000)
   }
 
-  const loadMore = () => {
+  const loadMore = (): ReactElement<HTMLElement> => {
     const { skeletonLoading, moreloading } = listState
     return !skeletonLoading && !moreloading ? (
       <div
@@ -59,7 +59,7 @@ export default () => {
       itemLayout="horizontal"
       loadMore={loadMore()}
       dataSource={listState.list}
-      renderItem={(item: { loading?: boolean; name: { last: string } }) => (
+      renderItem={(item: { loading?: boolean; name: { last?: string } }): ReactElement<HTMLElement> => (
         <List.Item actions={[<a key="list-loadmore-edit">edit</a>, <a key="list-loadmore-more">more</a>]}>
           <Skeleton avatar title={false} paragraph={{ rows: 3, width: [100, 200, 300] }} loading={item.loading} active>
             <List.Item.Meta

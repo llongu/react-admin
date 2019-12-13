@@ -12,6 +12,12 @@ module.exports = {
     "ecmaVersion": 2019,
     "sourceType": 'module',
     "ecmaFeatures": {
+      // lambda表达式  
+      "arrowFunctions": true,
+      // 解构赋值  
+      "destructuring": true,
+      // class  
+      "classes": true,
       jsx: true
     }
   },
@@ -90,7 +96,7 @@ module.exports = {
         "SwitchCase": 1
       }
     ],
-    "jsx-quotes": [2, "prefer-single"],
+    "jsx-quotes": [2, "prefer-double"],
     "key-spacing": [
       2,
       {
@@ -270,9 +276,10 @@ module.exports = {
       2,
       "always",
       {
-        "objectsInObjects": false
+        "objectsInObjects": true
       }
     ],
-    "array-bracket-spacing": [2, "never"]
+    "array-bracket-spacing": [2, "never"],
+    "@typescript-eslint/no-explicit-any": [1],
   }
 }

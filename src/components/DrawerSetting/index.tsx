@@ -1,27 +1,27 @@
-import React, { useState } from "react"
-import { Drawer, Button, Icon, Input } from "antd"
+import React, { useState, ReactElement } from "react"
+import { Drawer, Icon, Input } from "antd"
 import Styles from "./index.less"
-const DrawerSetting = () => {
+const DrawerSetting = (): ReactElement<HTMLElement> => {
   const [state, setState] = useState({
     visible: false,
     themeColor: "#ff0080"
   })
 
-  const showDrawer = () => {
+  const showDrawer = (): void => {
     setState({
       ...state,
       visible: true
     })
   }
 
-  const onClose = () => {
+  const onClose = (): void => {
     setState({
       ...state,
       visible: false
     })
   }
 
-  const changeTheme = e => {
+  const changeTheme = (): void => {
     const { value } = document.getElementById("themeColor") as HTMLInputElement
     console.log(value)
 

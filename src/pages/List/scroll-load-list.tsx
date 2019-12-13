@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, ReactElement } from "react"
 import { List, message, Avatar, Spin } from "antd"
 import InfiniteScroll from "react-infinite-scroller"
 import Styles from "./list.less"
@@ -34,14 +34,14 @@ const staticData = [
     nat: "AU"
   }
 ]
-const InfiniteListExample = () => {
+const InfiniteListExample = (): ReactElement<HTMLElement> => {
   const [listState, setListState] = useState({
     data: [...staticData],
     loading: false,
     hasMore: true
   })
 
-  const handleInfiniteOnLoad = () => {
+  const handleInfiniteOnLoad = (): void => {
     console.log("handleInfiniteOnLoad")
     let { data } = listState
     setListState({
@@ -74,7 +74,7 @@ const InfiniteListExample = () => {
         <InfiniteScroll initialLoad={true} pageStart={0} loadMore={handleInfiniteOnLoad} hasMore={!listState.loading && listState.hasMore} useWindow={false}>
           <List
             dataSource={listState.data}
-            renderItem={(item, index) => (
+            renderItem={(item, index): ReactElement<HTMLElement> => (
               <List.Item key={index}>
                 <List.Item.Meta
                   avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}

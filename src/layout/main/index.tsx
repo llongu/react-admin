@@ -1,7 +1,7 @@
-import React from "react"
-import { Link, Route } from "react-router-dom"
+import React, { ReactElement } from "react"
+import { Route } from "react-router-dom"
 import matchRoutes from "@utils/matchRoutes"
-import { Button, Layout } from "antd"
+import { Layout } from "antd"
 const { Content } = Layout
 import Header from "@/components/Header"
 import Sider from "@/components/Sider"
@@ -9,7 +9,7 @@ import Breadcrumb from "@/components/Breadcrumb"
 import DrawerSetting from "@/components/DrawerSetting"
 import { InsProgressBar } from "react-ins-progress-bar"
 import "./main.css"
-const Main = (components: { location: { pathname: string }; route: { children: { component: React.FunctionComponent<{}> }[] } }) => {
+const Main = (components: { location: { pathname: string }; route: { children: { component: React.FunctionComponent<{}> }[] } }): ReactElement<HTMLElement> => {
   return (
     <Layout>
       <Sider />

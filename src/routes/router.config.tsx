@@ -3,7 +3,7 @@
 import Loading from "@/components/Loading"
 import Loadable from "react-loadable"
 
-function LoadableComponent(loader) {
+function LoadableComponent(loader): object {
   return Loadable({
     loader,
     loading: Loading,

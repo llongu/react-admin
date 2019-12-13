@@ -1,10 +1,9 @@
-import React, { useState } from "react"
-import { Form, Button, Icon, Input, DatePicker, TimePicker, Select, Radio, Checkbox, Row, Col, Cascader, InputNumber } from "antd"
+import React, { useState, ReactElement, FormEvent } from "react"
+import { Form, Button, Icon, Input, DatePicker, Select, Radio, Checkbox, Row, Col, Cascader, InputNumber } from "antd"
 const { RangePicker } = DatePicker
 const { Option } = Select
 
 import { FormComponentProps } from "antd/es/form"
-import { number } from "prop-types"
 interface UserFormProps extends FormComponentProps {
   username: string
   password: string
@@ -80,11 +79,11 @@ const residences = [
   }
 ]
 
-const MyForm = (props: FormComponentProps) => {
+const MyForm = (props: FormComponentProps): ReactElement<HTMLElement> => {
   const { getFieldDecorator } = props.form
 
   // validator
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = (e: FormEvent): void => {
     e.preventDefault()
     props.form.validateFields((err, values) => {
       if (!err) {
@@ -93,7 +92,7 @@ const MyForm = (props: FormComponentProps) => {
     })
   }
 
-  const validateToNextPassword = (rule, value, callback) => {
+  const validateToNextPassword = (rule, value, callback): void => {
     const { form } = props
     if (value) {
       form.validateFields(["confirm"], { force: true })
@@ -101,7 +100,7 @@ const MyForm = (props: FormComponentProps) => {
     callback()
   }
 
-  const compareToFirstPassword = (rule, value, callback) => {
+  const compareToFirstPassword = (rule, value, callback): void => {
     const { form } = props
     if (value && value !== form.getFieldValue("password")) {
       callback("Two passwords that you enter is inconsistent!")
@@ -144,7 +143,7 @@ const MyForm = (props: FormComponentProps) => {
     value: 12
   })
 
-  const handleNumberChange = (v: number) => {
+  const handleNumberChange = (v: number): void => {
     setState(oldState => ({
       ...oldState,
       ...validatePrimeNumber(v),
@@ -175,7 +174,7 @@ const MyForm = (props: FormComponentProps) => {
         <Form.Item label="date">
           {getFieldDecorator("date", {
             rules: [{ required: false, message: "Please choose your date!" }]
-          })(<RangePicker renderExtraFooter={() => "extra footer"} style={{ width: "100%" }} />)}
+          })(<RangePicker renderExtraFooter={(): string => "extra footer"} style={{ width: "100%" }} />)}
         </Form.Item>
 
         <Form.Item label="Select" hasFeedback>

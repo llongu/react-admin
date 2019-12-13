@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, ReactElement } from "react"
 import { Calendar, Badge } from "antd"
 
 // click year render month
-function getMonthData(value) {
+function getMonthData(value): number {
   console.log(value)
   if (value.month() === 8) {
     return 1394
@@ -11,7 +11,7 @@ function getMonthData(value) {
   }
 }
 
-function monthCellRender(value) {
+function monthCellRender(value): ReactElement<HTMLElement> | null {
   const num = getMonthData(value)
   return num ? (
     <div className="notes-month">
@@ -21,7 +21,7 @@ function monthCellRender(value) {
   ) : null
 }
 
-export default () => {
+export default (): ReactElement<HTMLElement> => {
   const [dayData, setDay] = useState({
     "1": [{ type: "success", content: "This is very long usual event。。...." }],
     "10": [
@@ -40,7 +40,7 @@ export default () => {
   }, [dayData])
 
   // clik month render day
-  function getListData(value) {
+  function getListData(value): [] {
     let listData
     switch (value.date()) {
       default:
@@ -50,11 +50,11 @@ export default () => {
     return listData || []
   }
 
-  function dateCellRender(value) {
+  function dateCellRender(value: object): ReactElement<HTMLElement> {
     const listData = getListData(value)
     return (
       <ul className="events">
-        {listData.map(item => (
+        {listData.map((item: { content: string; type: "success" | "processing" | "default" | "error" | "warning" }) => (
           <li key={item.content}>
             <Badge status={item.type} text={item.content} />
           </li>
@@ -63,7 +63,7 @@ export default () => {
     )
   }
 
-  const onSelect = value => {
+  const onSelect = (value): void => {
     const newDayData = dayData[value.date()] || []
     newDayData.push({ type: "success", content: "diy..." + Math.random() + 10000 })
     setDay({

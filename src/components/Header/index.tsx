@@ -1,14 +1,13 @@
-import React, { memo } from "react"
-import { Link } from "react-router-dom"
+import React, { memo, ReactElement } from "react"
 import { Layout, Menu, Icon, Avatar } from "antd"
 import { Dropdown } from "antd"
 const { Header } = Layout
 import Styles from "./index.less"
 
-export default memo(() => {
+const Headers = (): ReactElement<HTMLElement> => {
   const collapsed = false
 
-  const toggle = () => {
+  const toggle = (): void => {
     console.log("toggle")
   }
   const menuHeaderDropdown = (
@@ -34,16 +33,16 @@ export default memo(() => {
     </Menu>
   )
   return (
-    <>
-      <Header style={{ background: "#fff", padding: 0 }}>
-        <Icon className="trigger" type={collapsed ? "menu-unfold" : "menu-fold"} onClick={toggle} />
-        <Dropdown className={Styles.dropdownMain} overlay={menuHeaderDropdown} overlayClassName="dropdown-menu">
-          <span>
-            <Avatar size="large" icon="user" alt="avatar" className={Styles.antAvatar} />
-            <span>test</span>
-          </span>
-        </Dropdown>
-      </Header>
-    </>
+    <Header style={{ background: "#fff", padding: 0 }}>
+      <Icon className="trigger" type={collapsed ? "menu-unfold" : "menu-fold"} onClick={toggle} />
+      <Dropdown className={Styles.dropdownMain} overlay={menuHeaderDropdown} overlayClassName="dropdown-menu">
+        <span>
+          <Avatar size="large" icon="user" alt="avatar" className={Styles.antAvatar} />
+          <span>test</span>
+        </span>
+      </Dropdown>
+    </Header>
   )
-})
+}
+
+export default memo(Headers)
