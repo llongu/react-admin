@@ -24,22 +24,21 @@ module.exports = merge(baseWebpackConfig, {
     hot: true,
     host: 'localhost',
     port: 9000,
-    overlay: { warnings: false, errors: true }
-    // proxy: {
-    //   '/api': {
-    //     target: 'http://127.0.0.1:3000',
-    //     changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
-    //     pathRewrite: {
-    //       '^/api': '' // 重写接口
-    //     }
-    //   }
-    // }
+    overlay: { warnings: false, errors: true },
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
+        pathRewrite: {
+          '^/api': '' // 重写接口
+        }
+      }
+    }
   },
   plugins: [
     new FriendlyErrorsWebpackPlugin({
       compilationSuccessInfo: {
         messages: [`You application is running here http://localhost:9000`]
-        // notes: ["开发环境的Mock数据请务必与服务器报纸一致"]
       },
       clearConsole: true,
       onErrors: (severity, errors) => {

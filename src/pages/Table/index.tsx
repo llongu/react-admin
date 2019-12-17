@@ -1,6 +1,6 @@
 import React, { useState, ReactElement, useEffect } from "react"
 import { Table } from "antd"
-import request from "@utils/request"
+import { tableQuery } from "@services/table"
 
 const columns = [
   {
@@ -20,17 +20,31 @@ const columns = [
 export default (): ReactElement<HTMLElement> => {
   const [state, setState] = useState({
     tableData: [],
+    pageIndex: 1,
+    pageSize: 10,
     selectedRowKeys: [] // Check here to configure the default column
   })
-
-  useEffect(() => {
-    async function getData(): Promise<void> {
-      const response = await request.post("api/table/query")
-      console.log(response)
+  async function getData(): Promise<void> {
+    try {
+      const res: { list?: [] } = await tableQuery()
+      setState({
+        ...state,
+        tableData: res.list || []
+      })
+    } catch (error) {
+      console.warn(error)
     }
+  }
+  useEffect(() => {
     getData()
-  }, [])
+  }, [state.pageIndex])
 
+  const onTableChange = (pagination): void => {
+    setState({
+      ...state,
+      pageIndex: pagination.current
+    })
+  }
   const onSelectChange = (selectedRowKeys): void => {
     console.log("selectedRowKeys changed: ", selectedRowKeys)
     setState({ ...state, selectedRowKeys })
@@ -69,5 +83,13 @@ export default (): ReactElement<HTMLElement> => {
     ]
   }
 
-  return <Table rowSelection={rowSelection} columns={columns} dataSource={state.tableData} />
+  return (
+    <Table
+      rowSelection={rowSelection}
+      columns={columns}
+      dataSource={state.tableData}
+      pagination={{ current: state.pageIndex, defaultPageSize: state.pageSize }}
+      onChange={onTableChange}
+    />
+  )
 }

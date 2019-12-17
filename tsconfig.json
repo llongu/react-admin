@@ -14,12 +14,14 @@
     // 删除所有注释，除了以 /!*开头的版权信息。
     "removeComments": true,
     "lib": ["esnext", "dom"],
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"],
       "@static/*": ["static/*"],
-      "@utils/*": ["src/utils/*"]
+      "@mock/*": ["mock/*"],
+      "@utils/*": ["src/utils/*"],
+      "@services/*": ["src/services/*"]
     }
   },
   "include": ["./src/*", "src/module.d.ts"],

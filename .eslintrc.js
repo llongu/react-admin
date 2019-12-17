@@ -5,7 +5,7 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
-    "prettier",
+    "prettier",//prettier与 eslint 
     "prettier/@typescript-eslint"
   ],//定义文件继承的子规范
   "parserOptions": {

@@ -1,7 +1,6 @@
 import axios from "axios"
 import { notification } from "antd"
 import ErrorCode from "./httpCode"
-
 axios.defaults.timeout = 30000
 axios.defaults.baseURL = "/"
 
@@ -17,9 +16,9 @@ axios.interceptors.request.use(
 )
 
 axios.interceptors.response.use(
-  (response): Promise<any> => {
+  response => {
     const { data } = response
-    if (data.status === 200) {
+    if (data.statusCode === 200) {
       return data
     } else {
       return ErrorCode(data)
@@ -28,7 +27,7 @@ axios.interceptors.response.use(
   (error): Promise<object> => {
     notification["error"]({
       message: "response error",
-      description: error
+      description: error.message
     })
     return Promise.reject(error)
   }

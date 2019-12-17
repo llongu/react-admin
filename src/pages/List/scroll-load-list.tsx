@@ -1,54 +1,42 @@
-import React, { useState, ReactElement } from "react"
+import React, { useState, ReactElement, useEffect } from "react"
 import { List, message, Avatar, Spin } from "antd"
 import InfiniteScroll from "react-infinite-scroller"
 import Styles from "./list.less"
-const staticData = [
-  {
-    gender: "female",
-    name: { title: "Miss", first: "Cathy", last: "Johnson" },
-    email: "cathy.johnson@example.com",
-    nat: "IE"
-  },
-  {
-    gender: "female",
-    name: { title: "Mrs", first: "Reinie", last: "Glas" },
-    email: "reinie.glas@example.com",
-    nat: "NL"
-  },
-  {
-    gender: "female",
-    name: { title: "Ms", first: "Quinty", last: "Hemminga" },
-    email: "quinty.hemminga@example.com",
-    nat: "NL"
-  },
-  {
-    gender: "male",
-    name: { title: "Mr", first: "آرسین", last: "زارعی" },
-    email: "arsyn.zraay@example.com",
-    nat: "IR"
-  },
-  {
-    gender: "female",
-    name: { title: "Mrs", first: "Lillie", last: "Webb" },
-    email: "lillie.webb@example.com",
-    nat: "AU"
-  }
-]
+import { list2Query } from "@services/list"
+
 const InfiniteListExample = (): ReactElement<HTMLElement> => {
   const [listState, setListState] = useState({
-    data: [...staticData],
+    pageIndex: 1,
+    pageSize: 10,
+    list: [],
     loading: false,
     hasMore: true
   })
 
+  async function getData(): Promise<void> {
+    try {
+      const res: { list?: [] } = await list2Query()
+      setListState({
+        ...listState,
+        loading: false,
+        list: [...listState.list, ...(res.list || [])]
+      })
+      console.log(res)
+    } catch (error) {
+      console.warn(error)
+    }
+  }
+
+  useEffect(() => {
+    getData()
+  }, [listState.pageIndex])
+
   const handleInfiniteOnLoad = (): void => {
-    console.log("handleInfiniteOnLoad")
-    let { data } = listState
     setListState({
       ...listState,
       loading: true
     })
-    if (data.length > 50) {
+    if (listState.list.length > 50) {
       message.warning("Infinite List loaded all")
       setListState({
         ...listState,
@@ -58,14 +46,12 @@ const InfiniteListExample = (): ReactElement<HTMLElement> => {
       return
     }
 
-    setTimeout(() => {
-      data = data.concat(staticData)
-      setListState({
-        ...listState,
-        data,
-        loading: false
-      })
-    }, 2000)
+    // setTimeout(() => {
+    //   setListState({
+    //     ...listState,
+    //     pageIndex: listState.pageIndex + 1
+    //   })
+    // }, 1500)
   }
 
   return (
@@ -73,7 +59,7 @@ const InfiniteListExample = (): ReactElement<HTMLElement> => {
       <div className="demo-infinite-container">
         <InfiniteScroll initialLoad={true} pageStart={0} loadMore={handleInfiniteOnLoad} hasMore={!listState.loading && listState.hasMore} useWindow={false}>
           <List
-            dataSource={listState.data}
+            dataSource={listState.list}
             renderItem={(item, index): ReactElement<HTMLElement> => (
               <List.Item key={index}>
                 <List.Item.Meta

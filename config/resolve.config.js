@@ -1,10 +1,12 @@
 const { resolve } = require('path')
 
 module.exports = {
-  extensions: ['.js', '.jsx', '.tsx', '.ts', 'css'],
+  extensions: ['.js', '.jsx', '.ts', '.tsx', 'css'],
   alias: {
     '@': resolve(__dirname, '..', 'src/'),
     '@static': resolve(__dirname, '..', 'static/'),
-    '@utils': resolve(__dirname, '..', 'src/utils/')
+    '@mock': resolve(__dirname, '..', 'mock/'),
+    '@utils': resolve(__dirname, '..', 'src/utils/'),
+    '@services': resolve(__dirname, '..', 'src/services/')
   }
 }

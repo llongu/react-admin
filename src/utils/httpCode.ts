@@ -16,12 +16,12 @@ const codeMessage = {
   504: "网关超时。"
 }
 
-function ErrorCode(data: { status?: number; msg?: string }): Promise<object> {
+function ErrorCode(data: { statusCode?: number; message?: string }): Promise<object> {
   Object.keys(codeMessage).forEach((code): void => {
-    if (data.status === Number(code)) {
+    if (data.statusCode === Number(code)) {
       notification["warn"]({
         message: "response warn",
-        description: data.msg || codeMessage[code]
+        description: data.message || codeMessage[code]
       })
     }
   })

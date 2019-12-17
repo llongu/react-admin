@@ -1,23 +1,37 @@
-import React, { useState, ReactElement } from "react"
+import React, { useState, useEffect, ReactElement } from "react"
 import { List, Avatar, Button, Skeleton } from "antd"
-
-const staticList: Array<object> = [
-  { gender: "male", name: { title: "Mr", first: "آرمین", last: "موسوی" }, email: "armyn.mwswy@example.com", nat: "IR" },
-  { gender: "male1", name: { title: "Mr", first: "آرمین", last: "موسوی" }, email: "armyn.mwswy@example.com", nat: "IR" },
-  { gender: "male2", name: { title: "Mr", first: "آرمین", last: "موسوی" }, email: "armyn.mwswy@example.com", nat: "IR" }
-]
+import { listQuery } from "@services/list"
 
 const SkeletonLoadingList = [
   { loading: true, name: {} },
   { loading: true, name: {} },
   { loading: true, name: {} }
 ]
+
 export default (): ReactElement<HTMLElement> => {
   const [listState, setListState] = useState({
     moreloading: false,
-    skeletonLoading: false, //
-    list: [...staticList]
+    skeletonLoading: false,
+    pageIndex: 1,
+    pageSize: 10,
+    list: []
   })
+
+  async function getData(): Promise<void> {
+    try {
+      const res: { list?: [] } = await listQuery()
+      setListState({
+        ...listState,
+        moreloading: false,
+        list: [...listState.list, ...(res.list || [])]
+      })
+    } catch (error) {
+      console.warn(error)
+    }
+  }
+  useEffect(() => {
+    getData()
+  }, [listState.pageIndex])
 
   const onLoadMore = (): void => {
     setListState({
@@ -26,14 +40,12 @@ export default (): ReactElement<HTMLElement> => {
       list: [...listState.list, ...SkeletonLoadingList]
     })
 
-    // request
     setTimeout(() => {
       setListState({
         ...listState,
-        moreloading: false,
-        list: [...listState.list, ...staticList]
+        pageIndex: listState.pageIndex + 1
       })
-    }, 2000)
+    }, 1500)
   }
 
   const loadMore = (): ReactElement<HTMLElement> => {
