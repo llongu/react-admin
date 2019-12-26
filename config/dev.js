@@ -19,7 +19,7 @@ module.exports = merge(baseWebpackConfig, {
     //   chunkModules: false
     // },
     historyApiFallback: true,
-    contentBase: path.resolve(__dirname, '../dist/'),
+    contentBase: false,
     compress: false,
     hot: true,
     host: 'localhost',
@@ -30,7 +30,7 @@ module.exports = merge(baseWebpackConfig, {
         target: 'http://localhost:3000',
         changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
         pathRewrite: {
-          '^/api': '' // 重写接口
+          '^/api': 'api' // 重写接口
         }
       }
     }

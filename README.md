@@ -58,5 +58,3 @@
   | ├─prod.js
   | └resolve.config.js
 ```
-
-my-web-report

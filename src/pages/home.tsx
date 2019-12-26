@@ -103,6 +103,7 @@ const Home = (): ReactElement<HTMLElement> => {
       <span>{state.num} </span>
       <span>{`${state.status}`}</span>
       <br />
+      my-web-report
       <Button onClick={testReducer}>testReducer</Button>
       <div onClick={changecolor}>changecolor</div>
     </div>

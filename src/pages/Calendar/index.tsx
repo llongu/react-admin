@@ -1,13 +1,13 @@
 import React, { useState, useEffect, ReactElement } from "react"
 import { Calendar, Badge } from "antd"
+import { calendarQuery, calendarAddDay } from "@services/calendar"
 
 // click year render month
-function getMonthData(value): number {
-  console.log(value)
+function getMonthData(value): string {
   if (value.month() === 8) {
-    return 1394
+    return "9月"
   } else if (value.month() === 1) {
-    return 1
+    return "2月"
   }
 }
 
@@ -22,22 +22,18 @@ function monthCellRender(value): ReactElement<HTMLElement> | null {
 }
 
 export default (): ReactElement<HTMLElement> => {
-  const [dayData, setDay] = useState({
-    "1": [{ type: "success", content: "This is very long usual event。。...." }],
-    "10": [
-      { type: "warning", content: "This is warning event." },
-      { type: "success", content: "This is usual event." }
-    ],
-    "20": [
-      { type: "warning", content: "This is warning event" },
-      { type: "error", content: "This is error event 1." },
-      { type: "error", content: "This is error event 2." }
-    ]
-  })
+  const [dayData, setDay] = useState({})
 
   useEffect(() => {
-    console.log("dayData change")
-  }, [dayData])
+    ;(async (): Promise<void> => {
+      try {
+        const result: { list?: object } = await calendarQuery()
+        setDay(result.list)
+      } catch (error) {
+        console.error(error)
+      }
+    })()
+  }, [])
 
   // clik month render day
   function getListData(value): [] {
@@ -63,13 +59,19 @@ export default (): ReactElement<HTMLElement> => {
     )
   }
 
-  const onSelect = (value): void => {
+  const onSelect = async (value): Promise<void> => {
+    console.log("dete changed")
     const newDayData = dayData[value.date()] || []
-    newDayData.push({ type: "success", content: "diy..." + Math.random() + 10000 })
-    setDay({
-      ...dayData,
-      [value.date()]: newDayData
-    })
+    try {
+      const result: { list?: object } = await calendarAddDay()
+      newDayData.push(result.list)
+      setDay({
+        ...dayData,
+        [value.date()]: newDayData
+      })
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return <Calendar dateCellRender={dateCellRender} monthCellRender={monthCellRender} onSelect={onSelect} />

@@ -28,7 +28,7 @@ module.exports = {
   },
 
   // required to lint *.vue files
-  "plugins": ['@typescript-eslint', "react", "react-hooks",],//定义了该eslint文件所依赖的插件
+  "plugins": ['@typescript-eslint', "react"],//定义了该eslint文件所依赖的插件
   // check if imports actually resolve
   "settings": {             //自动发现React的版本，从而进行规范react代码
     "react": {
@@ -43,8 +43,6 @@ module.exports = {
   "rules": {
     "react/jsx-uses-react": "error",
     "react/prop-types": "error",
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
     "accessor-pairs": 2,
     "arrow-spacing": [
       2,
@@ -281,5 +279,6 @@ module.exports = {
     ],
     "array-bracket-spacing": [2, "never"],
     "@typescript-eslint/no-explicit-any": [1],
+    "space-before-function-paren": 0
   }
 }

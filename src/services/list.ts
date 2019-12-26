@@ -1,8 +1,8 @@
 import request from "@utils/request"
 
-export async function listQuery(): Promise<object> {
-  return request.post("api/list/query")
+export async function listQuery<T>(params: T): Promise<object> {
+  return request.post("api/list/query", { data: { ...params } })
 }
-export async function list2Query(): Promise<object> {
-  return request.get("api/list2/query")
+export async function list2Query<T>(params: T): Promise<object> {
+  return await request.post("api/list2/query", { data: { ...params } })
 }

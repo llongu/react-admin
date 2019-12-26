@@ -16,7 +16,6 @@ const columns = [
     dataIndex: "address"
   }
 ]
-
 export default (): ReactElement<HTMLElement> => {
   const [state, setState] = useState({
     tableData: [],
@@ -32,7 +31,7 @@ export default (): ReactElement<HTMLElement> => {
         tableData: res.list || []
       })
     } catch (error) {
-      console.warn(error)
+      console.error(error)
     }
   }
   useEffect(() => {

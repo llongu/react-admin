@@ -1,12 +1,11 @@
-
 const Mock = require("mockjs")
 
 module.exports = {
   "/api/table/query": ["POST", {
-    status: 200,
+    statusCode: 200,
     success: true,
     message: "成功",
-    "list|11-50": [
+    "list|50": [
       {
         "key|+1": 1,
         name: `Edward King`,

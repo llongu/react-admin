@@ -19,7 +19,8 @@ export default (): ReactElement<HTMLElement> => {
 
   async function getData(): Promise<void> {
     try {
-      const res: { list?: [] } = await listQuery()
+      const { pageIndex, pageSize } = listState
+      const res: { list?: [] } = await listQuery({ pageIndex, pageSize })
       setListState({
         ...listState,
         moreloading: false,

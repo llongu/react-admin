@@ -1,4 +1,3 @@
-
 const Hapi = require("@hapi/hapi")
 const Router = require("./index")
 
@@ -10,13 +9,13 @@ Router(server)
 
 const init = async () => {
   await server.register(require("@hapi/inert"))
-  await server.register({
-    plugin: require("hapi-pino"),
-    options: {
-      prettyPrint: false,
-      logEvents: ["response", "onPostStart"]
-    }
-  })
+  // await server.register({
+  //   plugin: require("hapi-pino"),
+  //   options: {
+  //     prettyPrint: true,
+  //     logEvents: ["response", "onPostStart"]
+  //   }
+  // })
 
   await server.start()
   console.log(`Server running at: ${server.info.uri}`)
