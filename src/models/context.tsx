@@ -1,5 +1,5 @@
 import React from "react"
 
-const MyContext = React.createContext("LL")
+const AppContext = React.createContext({})
 
-export default MyContext
+export default AppContext

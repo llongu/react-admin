@@ -19,7 +19,7 @@ module.exports = merge(baseWebpackConfig, {
     //   chunkModules: false
     // },
     historyApiFallback: true,
-    contentBase: false,
+    contentBase: './',
     compress: false,
     hot: true,
     host: 'localhost',

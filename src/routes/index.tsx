@@ -2,16 +2,17 @@ import React, { ReactElement } from "react"
 import { HashRouter as Router } from "react-router-dom"
 import renderRoutes from "@utils/renderRoutes"
 import routesMap from "@/routes/router.config"
-import MyContext from "@/models/context"
+import AppContext from "@/models/context"
+import PerformanceData from "@/models/performance"
 import ErrorBoundary from "@/components/ErrorBoundary" // error components
-const test = (): ReactElement<HTMLElement> => {
+const App = (): ReactElement<HTMLElement> => {
   return (
-    <MyContext.Provider value={"ProviderValue"}>
+    <AppContext.Provider value={PerformanceData}>
       <ErrorBoundary>
         <Router>{renderRoutes(routesMap, true)}</Router>
       </ErrorBoundary>
-    </MyContext.Provider>
+    </AppContext.Provider>
   )
 }
 
-export default test
+export default App

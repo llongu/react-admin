@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useState, useReducer, ReactElement } from "react"
-import imgs from "@static/1.jpg"
-import MyContext from "@/models/context"
+import React, { useContext, useReducer, ReactElement, useEffect } from "react"
+// import imgs from "@static/img/1.jpg"
+import AppContext from "@/models/context"
 import { Button } from "antd"
+
 // Suspense
 // function go() {
 //   return new Promise(resolve => {
@@ -18,23 +19,20 @@ interface InitState {
 }
 const Home = (): ReactElement<HTMLElement> => {
   // Provider set value, useContext or  <Consumer>{(value)=>{ get... }}</Consumer> getValue
-  const ProviderValue = useContext(MyContext)
-  console.log(ProviderValue)
+  const PerformanceData = useContext(AppContext)
+  console.log(PerformanceData)
   // useEffect
-  useEffect(() => {
-    console.log("home")
-  })
 
   // useState
-  const [count, setCount] = useState({
-    num: 0
-  })
 
   // useReducer
   const initState = {
     num: 0,
     status: false
   }
+  useEffect(() => {
+    console.log("home")
+  })
 
   // Suspense
   // async function fetchs() {
@@ -65,47 +63,17 @@ const Home = (): ReactElement<HTMLElement> => {
     })
   }
 
-  const changecolor = (): void => {
-    if (window.less) {
-      window.less
-        .modifyVars({
-          "@primary-color": "red",
-          "@menu-dark-item-active-bg": "red",
-          "@link-color": "#aaa",
-          "@text-color": "#aaa",
-          "@btn-primary-bg": "#aaa"
-        })
-        .then(() => {
-          alert("主题切换成功")
-        })
-        .catch(error => {
-          alert(`主题切换失败`)
-          console.log(error)
-        })
-    }
-  }
-
   return (
     <div>
       home
-      <img
-        src={imgs}
-        width="50"
-        height="50"
-        onClick={(): void =>
-          setCount({
-            num: count.num + 1
-          })
-        }
-      />
-      {count.num}
       <br />
       <span>{state.num} </span>
       <span>{`${state.status}`}</span>
       <br />
       my-web-report
       <Button onClick={testReducer}>testReducer</Button>
-      <div onClick={changecolor}>changecolor</div>
+      FP:{PerformanceData.FP}
+      FCP:{PerformanceData.FCP}
     </div>
   )
 }
