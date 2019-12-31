@@ -1,3 +1,4 @@
+import "@static/js/web-report-axios"
 const PerformanceData = {}
 const observer = new PerformanceObserver(list => {
   for (const entry of list.getEntries()) {
@@ -22,22 +23,4 @@ observer.observe({
   entryTypes: ["paint", "longtask"]
 })
 
-import "@static/js/web-report-default"
-Performance(
-  {
-    domain: "./api/webreport" // Your API address
-  },
-  getPerformance
-)
-
-// 去掉callback localShow 则上报 Your API address
-function getPerformance(data) {
-  console.warn(data)
-
-  // performance_set(data);
-
-  // resource_set(data);
-
-  // error_ste(data);
-}
 export default PerformanceData

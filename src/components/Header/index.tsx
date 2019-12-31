@@ -6,7 +6,6 @@ import Styles from "./index.less"
 
 const Headers = (): ReactElement<HTMLElement> => {
   const collapsed = false
-
   const toggle = (): void => {
     console.log("toggle")
   }

@@ -27,7 +27,7 @@ Performance.addError = function (err) {
 }
 Performance.addData = function (fn) { fn && fn(ADDDATA) };
 
-function randomString (len) {
+function randomString(len) {
     len = len || 10;
     var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz123456789';
     var maxPos = $chars.length;
@@ -39,9 +39,9 @@ function randomString (len) {
 }
 
 // web msgs report function
-function Performance (option, fn) {
+function Performance(option, fn) {
     try {
-        let filterUrl = ['/api/v1/report/web', 'livereload.js?snipver=1', '/sockjs-node/'];
+        let filterUrl = ['/api/v1/report/web', 'livereload.js?snipver=1', '/sockjs-node/info'];
         let opt = {
             // 上报地址
             domain: 'http://localhost/api',
@@ -69,22 +69,16 @@ function Performance (option, fn) {
             performance: {},
             // 错误列表
             errorList: [],
-            // 页面fetch数量
-            fetchNum: 0,
             // ajax onload数量
             loadNum: 0,
             // 页面ajax数量
             ajaxLength: 0,
-            // 页面fetch总数量
-            fetLength: 0,
             // 页面ajax信息
             ajaxMsg: {},
             // ajax成功执行函数
             goingType: '',
             // 是否有ajax
             haveAjax: false,
-            // 是否有fetch
-            haveFetch: false,
             // 来自域名
             preUrl: document.referrer && document.referrer !== location.href ? document.referrer : '',
             // 当前页面
@@ -101,7 +95,6 @@ function Performance (option, fn) {
         let beginTime = new Date().getTime()
         let loadTime = 0
         let ajaxTime = 0
-        let fetchTime = 0
 
         // error上报
         if (opt.isError) _error();
@@ -112,85 +105,13 @@ function Performance (option, fn) {
             getLargeTime();
         }, false);
 
-        // 执行fetch重写
-        if (opt.isAjax || opt.isError) _fetch();
-
         //  拦截ajax
-        if (opt.isAjax || opt.isError) _Ajax({
-            onreadystatechange: function (xhr) {
-                if (xhr.readyState === 4) {
-                    setTimeout(() => {
-                        if (conf.goingType === 'load') return;
-                        conf.goingType = 'readychange';
-                        const responseURL = xhr.xhr.responseURL ? xhr.xhr.responseURL.split('?')[0] : '';
-                        if (conf.ajaxMsg[responseURL]) {
-                            try {
-                                if (xhr.xhr.response instanceof Blob) {
-                                    conf.ajaxMsg[responseURL]['decodedBodySize'] = xhr.xhr.response.size;
-                                } else {
-                                    conf.ajaxMsg[responseURL]['decodedBodySize'] = xhr.xhr.responseText.length;
-                                }
-                            } catch (err) { }
-                            getAjaxTime('readychange')
-                        }
-                        if (xhr.status < 200 || xhr.status > 300) {
-                            xhr.method = xhr.args.method
-                            ajaxResponse(xhr)
-                        }
-                    }, 600)
-                }
-            },
-            onerror: function (xhr) {
-                if (xhr.args) {
-                    xhr.method = xhr.args.method
-                    xhr.responseURL = xhr.args.url
-                    xhr.statusText = 'ajax request error'
-                    if (conf.ajaxMsg[xhr.responseURL]) {
-                        getAjaxTime('error')
-                    }
-                }
-                ajaxResponse(xhr)
-            },
-            onload: function (xhr) {
-                if (xhr.readyState === 4) {
-                    if (conf.goingType === 'readychange') return;
-                    conf.goingType = 'load';
-                    const responseURL = xhr.xhr.responseURL ? xhr.xhr.responseURL.split('?')[0] : '';
-                    if (conf.ajaxMsg[responseURL]) {
-                        try {
-                            if (xhr.xhr.response instanceof Blob) {
-                                conf.ajaxMsg[responseURL]['decodedBodySize'] = xhr.xhr.response.size;
-                            } else {
-                                conf.ajaxMsg[responseURL]['decodedBodySize'] = xhr.xhr.responseText.length;
-                            }
-                        } catch (err) { }
-                        getAjaxTime('load');
-                    }
-                    if (xhr.status < 200 || xhr.status > 300) {
-                        xhr.method = xhr.args.method
-                        ajaxResponse(xhr)
-                    }
-                }
-            },
-            open: function (arg, xhr) {
-                if (opt.filterUrl && opt.filterUrl.length) {
-                    let begin = false;
-                    opt.filterUrl.forEach(item => { if (arg[1].indexOf(item) != -1) begin = true; })
-                    if (begin) return;
-                }
-
-                let result = { url: arg[1].split('?')[0], method: arg[0] || 'GET', type: 'xmlhttprequest' }
-                this.args = result
-
-                clearPerformance()
-                conf.ajaxMsg[result.url] = result;
-                conf.ajaxLength = conf.ajaxLength + 1;
-                conf.haveAjax = true
-            }
-        })
+        if (opt.isAjax || opt.isError) {
+            _Axios()
+        }
 
         // 获得markpage
-        function markUser () {
+        function markUser() {
             let markUser = sessionStorage.getItem('ps_markUser') || '';
             let result = {
                 markUser: markUser,
@@ -206,7 +127,7 @@ function Performance (option, fn) {
         }
 
         // 获得Uv
-        function markUv () {
+        function markUv() {
             const date = new Date();
             let markUv = localStorage.getItem('ps_markUv') || '';
             const datatime = localStorage.getItem('ps_markUvTime') || '';
@@ -220,7 +141,7 @@ function Performance (option, fn) {
         }
 
         // 资源过滤
-        function filterResource () {
+        function filterResource() {
             let reslist = conf.resourceList;
             let filterUrl = opt.filterUrl;
             let newlist = [];
@@ -241,7 +162,7 @@ function Performance (option, fn) {
 
         // report date
         // @type  1:页面级性能上报  2:页面ajax性能上报  3：页面内错误信息上报
-        function reportData (type = 1) {
+        function reportData(type = 1) {
             setTimeout(() => {
                 if (opt.isPage) perforPage();
                 if (opt.isResource || opt.isAjax) perforResource();
@@ -304,39 +225,27 @@ function Performance (option, fn) {
         }
 
         //比较onload与ajax时间长度
-        function getLargeTime () {
+        function getLargeTime() {
             if (conf.page !== location.href) {
                 // 页面级性能上报
-                if (conf.haveAjax && conf.haveFetch && loadTime && ajaxTime && fetchTime) {
-                    console.log(`loadTime:${loadTime},ajaxTime:${ajaxTime},fetchTime:${fetchTime}`)
-                    reportData(1)
-                } else if (conf.haveAjax && !conf.haveFetch && loadTime && ajaxTime) {
+                if (conf.haveAjax && loadTime && ajaxTime) {
                     console.log(`loadTime:${loadTime},ajaxTime:${ajaxTime}`)
                     reportData(1)
-                } else if (!conf.haveAjax && conf.haveFetch && loadTime && fetchTime) {
-                    console.log(`loadTime:${loadTime},fetchTime:${fetchTime}`)
-                    reportData(1)
-                } else if (!conf.haveAjax && !conf.haveFetch && loadTime) {
+                } else if (!conf.haveAjax && loadTime) {
                     console.log(`loadTime:${loadTime}`)
                     reportData(1)
                 }
             } else {
                 // 单页面内ajax上报
-                if (conf.haveAjax && conf.haveFetch && ajaxTime && fetchTime) {
-                    console.log(`ajaxTime:${ajaxTime},fetchTime:${fetchTime}`)
-                    reportData(2)
-                } else if (conf.haveAjax && !conf.haveFetch && ajaxTime) {
+                if (conf.haveAjax && ajaxTime) {
                     console.log(`ajaxTime:${ajaxTime}`)
-                    reportData(2)
-                } else if (!conf.haveAjax && conf.haveFetch && fetchTime) {
-                    console.log(`fetchTime:${fetchTime}`)
                     reportData(2)
                 }
             }
         }
 
         // 统计页面性能
-        function perforPage () {
+        function perforPage() {
             if (!window.performance) return;
             let timing = performance.timing
             conf.performance = {
@@ -364,12 +273,13 @@ function Performance (option, fn) {
         }
 
         // 统计页面资源性能
-        function perforResource () {
+        function perforResource() {
             if (!window.performance || !window.performance.getEntries) return false;
             let resource = performance.getEntriesByType('resource')
 
             let resourceList = [];
             if (!resource && !resource.length) return resourceList;
+
             resource.forEach((item) => {
                 if (!opt.isAjax && (item.initiatorType == 'xmlhttprequest' || item.initiatorType == 'fetchrequest')) return;
                 if (!opt.isResource && (item.initiatorType != 'xmlhttprequest' && item.initiatorType !== 'fetchrequest')) return;
@@ -386,6 +296,7 @@ function Performance (option, fn) {
                 if (ajaxMsg) {
                     json.method = ajaxMsg.method || 'GET'
                     json.type = ajaxMsg.type || json.type
+                    json.options = ajaxMsg.options || ''
                     json.decodedBodySize = json.decodedBodySize || ajaxMsg.decodedBodySize;
                 }
                 resourceList.push(json)
@@ -394,136 +305,92 @@ function Performance (option, fn) {
         }
 
         // ajax重写
-        function _Ajax (proxy) {
-            window._ahrealxhr = window._ahrealxhr || XMLHttpRequest
-            XMLHttpRequest = function () {
-                this.xhr = new window._ahrealxhr;
-                for (var attr in this.xhr) {
-                    var type = "";
-                    try {
-                        type = typeof this.xhr[attr]
-                    } catch (e) { }
-                    if (type === "function") {
-                        this[attr] = hookfun(attr);
-                    } else {
-                        Object.defineProperty(this, attr, {
-                            get: getFactory(attr),
-                            set: setFactory(attr)
+        function _Axios() {
+            if (!window.axios) return;
+            const _axios = window.axios
+            const List = ['axios', 'request', 'get', 'delete', 'head', 'options', 'put', 'post', 'patch']
+            List.forEach(item => {
+                _reseat(item)
+            })
+
+            function _reseat(item) {
+                let _key = null;
+                if (item === 'axios') {
+                    window['axios'] = resetFn;
+                    _key = _axios
+                } else if (item === 'request') {
+                    window['axios']['request'] = resetFn;
+                    _key = _axios['request'];
+                } else {
+                    window['axios'][item] = resetFn;
+                    _key = _axios[item];
+                }
+
+                function resetFn() {
+                    const result = ajaxArg(arguments, item)
+                    if (result.report !== 'report-data') {
+                        const url = result.url ? result.url.split('?')[0] : '';
+                        conf.ajaxMsg[url] = result;
+                        conf.ajaxLength = conf.ajaxLength + 1;
+                        conf.haveAjax = true
+                    }
+                    return _key.apply(this, arguments)
+                        .then(function (res) {
+                            if (result.report === 'report-data') return res;
+                            getAjaxTime('load');
+                            try {
+                                const responseURL = res.request.responseURL ? res.request.responseURL.split('?')[0] : '';
+                                const responseText = res.request.responseText;
+                                if (conf.ajaxMsg[responseURL]) conf.ajaxMsg[responseURL]['decodedBodySize'] = responseText.length;
+                            } catch (e) { }
+                            return res
                         })
-                    }
+                        .catch((err) => {
+                            if (result.report === 'report-data') return res;
+                            getAjaxTime('error')
+                            //error
+                            ajaxResponse({
+                                statusText: err.message,
+                                method: result.method,
+                                responseURL: result.url,
+                                options: result.options,
+                                status: err.response ? err.response.status : 0,
+                            })
+                            return err
+                        })
                 }
-            }
-
-            function getFactory (attr) {
-                return function () {
-                    var v = this.hasOwnProperty(attr + "_") ? this[attr + "_"] : this.xhr[attr];
-                    var attrGetterHook = (proxy[attr] || {})["getter"]
-                    return attrGetterHook && attrGetterHook(v, this) || v
-                }
-            }
-
-            function setFactory (attr) {
-                return function (v) {
-                    var xhr = this.xhr;
-                    var that = this;
-                    var hook = proxy[attr];
-                    if (typeof hook === "function") {
-                        xhr[attr] = function () {
-                            proxy[attr](that) || v.apply(xhr, arguments);
-                        }
-                    } else {
-                        var attrSetterHook = (hook || {})["setter"];
-                        v = attrSetterHook && attrSetterHook(v, that) || v
-                        try {
-                            xhr[attr] = v;
-                        } catch (e) {
-                            this[attr + "_"] = v;
-                        }
-                    }
-                }
-            }
-
-            function hookfun (fun) {
-                return function () {
-                    var args = [].slice.call(arguments)
-                    if (proxy[fun] && proxy[fun].call(this, args, this.xhr)) {
-                        return;
-                    }
-                    return this.xhr[fun].apply(this.xhr, args);
-                }
-            }
-            return window._ahrealxhr;
-        }
-
-        // 拦截fetch请求
-        function _fetch () {
-            if (!window.fetch) return;
-            let _fetch = fetch
-            window.fetch = function () {
-                const _arg = arguments
-                const result = fetArg(_arg)
-                if (result.type !== 'report-data') {
-                    clearPerformance()
-                    const url = result.url ? result.url.split('?')[0] : '';
-                    conf.ajaxMsg[url] = result;
-                    conf.fetLength = conf.fetLength + 1;
-                    conf.haveFetch = true
-                }
-                return _fetch.apply(this, arguments)
-                    .then((res) => {
-                        if (result.type === 'report-data') return res;
-                        try {
-                            const url = res.url ? res.url.split('?')[0] : '';
-                            res.clone().text().then(data => { if (conf.ajaxMsg[url]) conf.ajaxMsg[url]['decodedBodySize'] = data.length; })
-                        } catch (e) { }
-                        getFetchTime('success')
-                        return res
-                    })
-                    .catch((err) => {
-                        if (result.type === 'report-data') return;
-                        getFetchTime('error')
-                        //error
-                        let defaults = Object.assign({}, errordefo);
-                        defaults.t = new Date().getTime();
-                        defaults.n = 'fetch'
-                        defaults.msg = 'fetch request error';
-                        defaults.method = result.method
-                        defaults.data = {
-                            resourceUrl: result.url,
-                            text: err.stack || err,
-                            status: 0
-                        }
-                        conf.errorList.push(defaults)
-                        return err
-                    });
             }
         }
 
-        // fetch arguments
-        function fetArg (arg) {
-
-            let result = { method: 'GET', type: 'fetchrequest' }
+        // Ajax arguments
+        function ajaxArg(arg, item) {
+            let result = { method: 'GET', type: 'xmlhttprequest', report: '' }
             let args = Array.prototype.slice.apply(arg)
-
-            if (!args || !args.length) return result;
             try {
-                if (args.length === 1) {
-                    if (typeof (args[0]) === 'string') {
-                        result.url = args[0]
-                    } else if (typeof (args[0]) === 'object') {
-                        result.url = args[0].url
-                        result.method = args[0].method
-                    }
+                if (item == 'axios' || item == 'request') {
+                    result.url = args[0].url
+                    result.method = args[0].method
+                    result.options = result.method.toLowerCase() == 'get' ? args[0].params : args[0].data
                 } else {
                     result.url = args[0]
-                    result.method = args[1].method || 'GET'
-                    result.type = args[1].type || 'fetchrequest'
+                    result.method = ''
+                    if (args[1]) {
+                        if (args[1].params) {
+                            result.method = 'GET'
+                            result.options = args[1].params;
+                        } else {
+                            result.method = 'POST'
+                            result.options = args[1];
+                        }
+                    }
                 }
+                result.report = args[0].report
             } catch (err) { }
             return result;
         }
+
         // 拦截js error信息
-        function _error () {
+        function _error() {
             // img,script,css,jsonp
             window.addEventListener('error', function (e) {
                 let defaults = Object.assign({}, errordefo);
@@ -536,7 +403,7 @@ function Performance (option, fn) {
                     type: e.type,
                     resourceUrl: e.target.href || e.target.currentSrc,
                 };
-                if (e.target != window) conf.errorList.push(defaults);
+                if (e.target != window) conf.errorList.push(defaults)
             }, true);
             // js
             window.onerror = function (msg, _url, line, col, error) {
@@ -551,7 +418,7 @@ function Performance (option, fn) {
                         col: col
                     };
                     defaults.t = new Date().getTime();
-                    conf.errorList.push(defaults)
+                    conf.errorList.push(defaults);
                     // 上报错误信息
                     if (conf.page === location.href && !conf.haveAjax) reportData(3);
                 }, 0);
@@ -599,12 +466,13 @@ function Performance (option, fn) {
         }
 
         // ajax统一上报入口
-        function ajaxResponse (xhr, type) {
+        function ajaxResponse(xhr, type) {
             let defaults = Object.assign({}, errordefo);
             defaults.t = new Date().getTime();
             defaults.n = 'ajax'
             defaults.msg = xhr.statusText || 'ajax request error';
             defaults.method = xhr.method
+            defaults.options = xhr.options
             defaults.data = {
                 resourceUrl: xhr.responseURL,
                 text: xhr.statusText,
@@ -613,23 +481,8 @@ function Performance (option, fn) {
             conf.errorList.push(defaults)
         }
 
-        // fetch get time
-        function getFetchTime (type) {
-            conf.fetchNum += 1
-            if (conf.fetLength === conf.fetchNum) {
-                if (type == 'success') {
-                    console.log('走了 fetch success 方法')
-                } else {
-                    console.log('走了 fetch error 方法')
-                }
-                conf.fetchNum = conf.fetLength = 0
-                fetchTime = new Date().getTime() - beginTime
-                getLargeTime();
-            }
-        }
-
         // ajax get time
-        function getAjaxTime (type) {
+        function getAjaxTime(type) {
             conf.loadNum += 1
             if (conf.loadNum === conf.ajaxLength) {
                 if (type == 'load') {
@@ -645,32 +498,18 @@ function Performance (option, fn) {
             }
         }
 
-        function clearPerformance (type) {
-            if (window.performance && window.performance.clearResourceTimings) {
-                if (conf.haveAjax && conf.haveFetch && conf.ajaxLength == 0 && conf.fetLength == 0) {
-                    clear(1)
-                } else if (!conf.haveAjax && conf.haveFetch && conf.fetLength == 0) {
-                    clear(1)
-                } else if (conf.haveAjax && !conf.haveFetch && conf.ajaxLength == 0) {
-                    clear(1)
-                }
-            }
-        }
-
-        function clear (type = 0) {
+        function clear() {
             if (window.performance && window.performance.clearResourceTimings) performance.clearResourceTimings();
             conf.performance = {}
             conf.errorList = []
             conf.preUrl = ''
             conf.resourceList = []
-            conf.page = type === 0 ? location.href : '';
+            conf.page = location.href
             conf.haveAjax = false;
-            conf.haveFetch = false;
             conf.ajaxMsg = {};
             ERRORLIST = []
             ADDDATA = {}
             ajaxTime = 0
-            fetchTime = 0
         }
     } catch (err) { }
 }
