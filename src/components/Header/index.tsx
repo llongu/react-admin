@@ -1,13 +1,19 @@
-import React, { memo, ReactElement } from "react"
+import React, { memo, ReactElement, useContext } from "react"
 import { Layout, Menu, Icon, Avatar } from "antd"
 import { Dropdown } from "antd"
 const { Header } = Layout
 import Styles from "./index.less"
+import AppContext from "@/models/context"
+import { RouteComponentProps } from "react-router-dom"
 
-const Headers = (): ReactElement<HTMLElement> => {
-  const collapsed = false
+const Headers = (props: RouteComponentProps): ReactElement<HTMLElement> => {
+  const { siderCollapsed, changeSiderCollapsed } = useContext(AppContext)
   const toggle = (): void => {
-    console.log("toggle")
+    changeSiderCollapsed(!siderCollapsed)
+  }
+  const logOut = (): void => {
+    localStorage.setItem("login", "")
+    props.history.push("/login")
   }
   const menuHeaderDropdown = (
     <Menu selectedKeys={[]}>
@@ -25,7 +31,7 @@ const Headers = (): ReactElement<HTMLElement> => {
       }
       {<Menu.Divider />}
 
-      <Menu.Item key="logout">
+      <Menu.Item key="logout" onClick={logOut}>
         <Icon type="logout" />
         退出登录
       </Menu.Item>
@@ -33,7 +39,7 @@ const Headers = (): ReactElement<HTMLElement> => {
   )
   return (
     <Header style={{ background: "#fff", padding: 0 }}>
-      <Icon className="trigger" type={collapsed ? "menu-unfold" : "menu-fold"} onClick={toggle} />
+      <Icon className="trigger" type={siderCollapsed ? "menu-unfold" : "menu-fold"} onClick={toggle} />
       <Dropdown className={Styles.dropdownMain} overlay={menuHeaderDropdown} overlayClassName="dropdown-menu">
         <span>
           <Avatar size="large" icon="user" alt="avatar" className={Styles.antAvatar} />

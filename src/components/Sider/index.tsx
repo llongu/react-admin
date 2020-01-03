@@ -1,10 +1,13 @@
-import React, { memo, ReactElement } from "react"
+import React, { memo, ReactElement, useContext } from "react"
 import { Layout, Menu } from "antd"
 import meunMap from "@/utils/reanderMenus"
+import AppContext from "@/models/context"
+
 const { Sider } = Layout
 
 function Siders(): ReactElement<HTMLElement> {
-  const collapsed = false
+  const { siderCollapsed, changeSiderCollapsed } = useContext(AppContext)
+
   let selectedKeys = JSON.parse(localStorage.getItem("selectedKeys")) || ["1"]
   let opendKeys = [selectedKeys[0].split("")[0]]
 
@@ -15,7 +18,14 @@ function Siders(): ReactElement<HTMLElement> {
   }
 
   return (
-    <Sider trigger={null} collapsible collapsed={collapsed}>
+    <Sider
+      breakpoint="sm"
+      onBreakpoint={(broken): void => {
+        changeSiderCollapsed(broken)
+      }}
+      trigger={null}
+      collapsed={siderCollapsed}
+    >
       <div className="logo" />
       <Menu theme="dark" mode="inline" defaultOpenKeys={opendKeys} defaultSelectedKeys={selectedKeys} onSelect={menuSelected}>
         {meunMap}

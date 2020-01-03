@@ -130,9 +130,7 @@ const columns4 = [
 
 const Home = (): ReactElement<HTMLElement> => {
   // Provider set value, useContext or  <Consumer>{(value)=>{ get... }}</Consumer> getValue
-  const PerformanceData: Record<string, {}> = useContext(AppContext)
-  console.warn(PerformanceData)
-
+  const { PerformanceData } = useContext(AppContext)
   return (
     <>
       <h3>页面性能列表</h3>

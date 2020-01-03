@@ -37,7 +37,9 @@ const meunMap = (authMap: MapParams, SubMenuIndex: number | boolean = false): Re
       return (
         <Menu.Item key={SubMenuIndex || SubMenuIndex === 0 ? SubMenuIndex + "" + index : index}>
           <Icon type={item.icon || "none"} />
-          <Link to={item.path}>{item.name}</Link>
+          <span>
+            <Link to={item.path}>{item.name}</Link>
+          </span>
         </Menu.Item>
       )
     }

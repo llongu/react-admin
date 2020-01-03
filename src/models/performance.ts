@@ -1,5 +1,8 @@
 import "@static/js/web-report-axios"
-const PerformanceData = {}
+const PerformanceData = {
+  FP: "",
+  FCP: ""
+}
 const observer = new PerformanceObserver(list => {
   for (const entry of list.getEntries()) {
     // 首次绘制 (FP) 和 首次内容绘制 (FCP)   从文档的 <head> 中移除任何阻塞渲染的脚本或样式表，可以减少首次绘制和首次内容绘制前的等待时间

@@ -20,10 +20,12 @@ const Breadcrumbs = (props: {
   }
 
   let childrens = props.route.children
+  // console.log(paths)
+  // console.log(pathName)
+  // console.log(childrens)
   const breadMap = []
-
   while (childrens) {
-    childrens.forEach((item: RouteItem) => {
+    childrens.forEach((item: RouteItem, index: number) => {
       if (pathName === item.path && !breadMap.includes(item.name)) {
         breadMap.push({
           name: item.name,
@@ -36,12 +38,11 @@ const Breadcrumbs = (props: {
           path: item.children ? false : item.path
         })
         childrens = item.children || null
+      } else if (childrens && index === childrens.length - 1) {
+        childrens = null
       }
     })
   }
-  // console.log(paths)
-  // console.log(pathName)
-  // console.log(childrens)
 
   const breadRender = breadMap.map((item, index) => {
     const Links = (): ReactElement<HTMLElement> => {

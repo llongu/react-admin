@@ -9,12 +9,17 @@ import Breadcrumb from "@/components/Breadcrumb"
 import DrawerSetting from "@/components/DrawerSetting"
 import { InsProgressBar } from "react-ins-progress-bar"
 import "./main.css"
-const Main = (components: { location: { pathname: string }; route: { children: { component: React.FunctionComponent<{}> }[] } }): ReactElement<HTMLElement> => {
+import { RouteComponentProps } from "react-router-dom"
+interface MyRouteComponentProps extends RouteComponentProps {
+  route: { children: { component: React.FunctionComponent<{}> }[] }
+}
+
+const Main = (components: MyRouteComponentProps): ReactElement<HTMLElement> => {
   return (
     <Layout>
       <Sider />
       <Layout>
-        <Header />
+        <Header {...components} />
         <Breadcrumb {...components} />
 
         <Content

@@ -1,8 +1,18 @@
 import React, { ReactElement } from "react"
+import { Link } from "react-router-dom"
 import { Result, Button } from "antd"
 
-const home = (): ReactElement<HTMLElement> => (
-  <Result status="404" title="404" subTitle="Sorry, the page you visited does not exist." extra={<Button type="primary">Back Home</Button>} />
+const NotFound = (): ReactElement<HTMLElement> => (
+  <Result
+    status="404"
+    title="404"
+    subTitle="Sorry, the page you visited does not exist."
+    extra={
+      <Button type="primary">
+        <Link to="/">Back Home</Link>
+      </Button>
+    }
+  />
 )
 
-export default home
+export default NotFound
