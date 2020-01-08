@@ -22,7 +22,7 @@ const DrawerSetting = (): ReactElement<HTMLElement> => {
   }, [])
   const changeTheme = (): void => {
     const { value } = document.getElementById("themeColor") as HTMLInputElement
-    console.log(value)
+    // console.log(value)
 
     if (window.less) {
       window.less

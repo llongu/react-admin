@@ -40,11 +40,13 @@ export const authMap = {
     },
     {
       path: "/Calendar",
+      icon: "user",
       component: Calendar,
       name: "日历"
     },
     {
       path: "/List",
+      icon: "user",
       name: "列表",
       children: [
         {
@@ -61,11 +63,13 @@ export const authMap = {
     },
     {
       path: "/Form",
+      icon: "user",
       name: "表单",
       component: Form
     },
     {
       path: "/Table",
+      icon: "user",
       name: "表格",
       component: Table
     }

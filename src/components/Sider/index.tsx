@@ -1,22 +1,20 @@
-import React, { memo, ReactElement, useContext } from "react"
+import React, { memo, ReactElement, useContext, useState } from "react"
 import { Layout, Menu } from "antd"
 import meunMap from "@/utils/reanderMenus"
 import AppContext from "@/models/context"
-
+import { RouteComponentProps } from "react-router-dom"
 const { Sider } = Layout
 
-function Siders(): ReactElement<HTMLElement> {
+function Siders(props: RouteComponentProps): ReactElement<HTMLElement> {
   const { siderCollapsed, changeSiderCollapsed } = useContext(AppContext)
 
-  let selectedKeys = JSON.parse(localStorage.getItem("selectedKeys")) || ["1"]
-  let opendKeys = [selectedKeys[0].split("")[0]]
+  // 地址栏键入选中菜单
+  const selectedKeys = [props.location.pathname]
+  const [opendKeys, setOpendKeys] = useState(["/" + selectedKeys[0].split("/")[1]])
 
-  const menuSelected = (props: { selectedKeys: string[] }): void => {
-    localStorage.setItem("selectedKeys", JSON.stringify(props.selectedKeys))
-    selectedKeys = props.selectedKeys
-    opendKeys = [selectedKeys[0].split("")[0]]
+  const openORclose = (opendKeysProps: Array<string>): void => {
+    setOpendKeys(opendKeysProps)
   }
-
   return (
     <Sider
       breakpoint="sm"
@@ -27,7 +25,7 @@ function Siders(): ReactElement<HTMLElement> {
       collapsed={siderCollapsed}
     >
       <div className="logo" />
-      <Menu theme="dark" mode="inline" defaultOpenKeys={opendKeys} defaultSelectedKeys={selectedKeys} onSelect={menuSelected}>
+      <Menu theme="dark" mode="inline" openKeys={opendKeys} selectedKeys={selectedKeys} onOpenChange={openORclose}>
         {meunMap}
       </Menu>
     </Sider>

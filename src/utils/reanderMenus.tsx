@@ -11,17 +11,17 @@ interface MapParams {
   path?: string
 }
 
-const meunMap = (authMap: MapParams, SubMenuIndex: number | boolean = false): ReactElement<HTMLElement>[] => {
-  if (!Array.isArray(authMap.children)) {
+const meunMap = (authMap: MapParams): ReactElement<HTMLElement>[] => {
+  if (!authMap || !Array.isArray(authMap.children)) {
     throw new Error("generate menu error")
   }
 
   return authMap.children.map(
-    (item, index): ReactElement<HTMLElement> => {
+    (item): ReactElement<HTMLElement> => {
       if (item.children) {
         return (
           <SubMenu
-            key={index}
+            key={item.path}
             title={
               <span>
                 <Icon type={item.icon || "none"} />
@@ -29,13 +29,13 @@ const meunMap = (authMap: MapParams, SubMenuIndex: number | boolean = false): Re
               </span>
             }
           >
-            {meunMap(item, index)}
+            {meunMap(item)}
           </SubMenu>
         )
       }
 
       return (
-        <Menu.Item key={SubMenuIndex || SubMenuIndex === 0 ? SubMenuIndex + "" + index : index}>
+        <Menu.Item key={item.path}>
           <Icon type={item.icon || "none"} />
           <span>
             <Link to={item.path}>{item.name}</Link>

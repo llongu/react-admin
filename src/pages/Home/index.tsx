@@ -130,7 +130,20 @@ const columns4 = [
 
 const Home = (): ReactElement<HTMLElement> => {
   // Provider set value, useContext or  <Consumer>{(value)=>{ get... }}</Consumer> getValue
-  const { PerformanceData } = useContext(AppContext)
+  const { PerformanceData, performanceSource } = useContext(AppContext)
+  const { performanceList } = performanceSource
+  // function performance_set({ type = false, performance = false }) {
+  //   if (!performance || type !== 1) return
+
+  //   const performance_list = document.querySelectorAll('.performance_list li')
+  //   performance_list.forEach(item => {
+  //     const p = item.querySelector('p');
+  //     const text_name = item.querySelector('p').innerText;
+  //     if (performance.hasOwnProperty(text_name)) {
+  //       p.innerText = Number(performance[text_name]) / 1000 + ' s'
+  //     }
+  //   })
+  // }
   return (
     <>
       <h3>页面性能列表</h3>
@@ -141,7 +154,7 @@ const Home = (): ReactElement<HTMLElement> => {
       <ul className={Style["performance_list"]}>
         <li>
           页面准备耗时:
-          <p>radt</p>
+          <p>{performanceList.radt}</p>
         </li>
         <li>
           重定向耗时:

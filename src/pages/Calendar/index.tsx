@@ -25,14 +25,19 @@ export default (): ReactElement<HTMLElement> => {
   const [dayData, setDay] = useState({})
 
   useEffect(() => {
+    let isUnInstall = false
     ;(async (): Promise<void> => {
       try {
         const result: { list?: object } = await calendarQuery()
+        if (isUnInstall) return
         setDay(result.list)
       } catch (error) {
         console.error(error)
       }
     })()
+    return (): void => {
+      isUnInstall = true
+    }
   }, [])
 
   // clik month render day

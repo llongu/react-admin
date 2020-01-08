@@ -16,22 +16,26 @@ export default (): ReactElement<HTMLElement> => {
     pageSize: 10,
     list: []
   })
-
-  async function getData(): Promise<void> {
-    try {
-      const { pageIndex, pageSize } = listState
-      const res: { list?: [] } = await listQuery({ pageIndex, pageSize })
-      setListState({
-        ...listState,
-        moreloading: false,
-        list: [...listState.list, ...(res.list || [])]
-      })
-    } catch (error) {
-      console.warn(error)
-    }
-  }
   useEffect(() => {
+    let isUnInstall = false
+    async function getData(): Promise<void> {
+      try {
+        const { pageIndex, pageSize } = listState
+        const res: { list?: [] } = await listQuery({ pageIndex, pageSize })
+        if (isUnInstall) return
+        setListState({
+          ...listState,
+          moreloading: false,
+          list: [...listState.list, ...(res.list || [])]
+        })
+      } catch (error) {
+        console.warn(error)
+      }
+    }
     getData()
+    return (): void => {
+      isUnInstall = true
+    }
   }, [listState.pageIndex])
 
   const onLoadMore = (): void => {

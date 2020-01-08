@@ -1,4 +1,4 @@
-import React, { useState, ReactElement } from "react"
+import React, { useState, ReactElement, useEffect } from "react"
 import { List, Avatar, Spin } from "antd"
 import InfiniteScroll from "react-infinite-scroller"
 import Styles from "./list.less"
@@ -10,7 +10,13 @@ const InfiniteListExample = (): ReactElement<HTMLElement> => {
     pageIndex: 1,
     pageSize: 10
   })
-
+  // isUnInstall 阻止页面uninstall后依然进行setState 对未安装的组件执行响应状态更新
+  let isUnInstall = false
+  useEffect(() => {
+    return (): void => {
+      isUnInstall = true
+    }
+  }, [])
   const handleInfiniteOnLoad = (): void => {
     setTimeout(async () => {
       try {
@@ -18,6 +24,7 @@ const InfiniteListExample = (): ReactElement<HTMLElement> => {
           pageIndex: listState.pageIndex,
           pageSize: listState.pageSize
         })
+        if (isUnInstall) return
         setListState({
           ...listState,
           list: [...listState.list, ...(res.list || [])],

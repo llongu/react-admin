@@ -14,13 +14,13 @@ interface MyRouteComponentProps extends RouteComponentProps {
   route: { children: { component: React.FunctionComponent<{}> }[] }
 }
 
-const Main = (components: MyRouteComponentProps): ReactElement<HTMLElement> => {
+const Main = (props: MyRouteComponentProps): ReactElement<HTMLElement> => {
   return (
     <Layout>
-      <Sider />
+      <Sider {...props} />
       <Layout>
-        <Header {...components} />
-        <Breadcrumb {...components} />
+        <Header {...props} />
+        <Breadcrumb {...props} />
 
         <Content
           style={{
@@ -31,7 +31,7 @@ const Main = (components: MyRouteComponentProps): ReactElement<HTMLElement> => {
           }}
         >
           {/* matchroutes */}
-          <Route component={matchRoutes(components.location.pathname, components.route.children)} />
+          <Route component={matchRoutes(props.location.pathname, props.route.children)} />
         </Content>
         <DrawerSetting />
         <InsProgressBar height={"3px"} />

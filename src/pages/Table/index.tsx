@@ -23,19 +23,26 @@ export default (): ReactElement<HTMLElement> => {
     pageSize: 10,
     selectedRowKeys: [] // Check here to configure the default column
   })
-  async function getData(): Promise<void> {
-    try {
-      const res: { list?: [] } = await tableQuery()
-      setState({
-        ...state,
-        tableData: res.list || []
-      })
-    } catch (error) {
-      console.error(error)
-    }
-  }
+
   useEffect(() => {
+    let isUnInstall = false
+    async function getData(): Promise<void> {
+      try {
+        const res: { list?: [] } = await tableQuery()
+        if (isUnInstall) return
+        setState({
+          ...state,
+          tableData: res.list || []
+        })
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
     getData()
+    return (): void => {
+      isUnInstall = true
+    }
   }, [state.pageIndex])
 
   const onTableChange = (pagination): void => {

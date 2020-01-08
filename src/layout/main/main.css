@@ -17,9 +17,21 @@ section {
 .ant-layout-content {
   min-height: auto !important;
 }
+
 .ant-menu-item span > a {
   color: inherit;
 }
+.ant-menu-item span > a::before {
+  background-color: hsla(0, 0%, 0%, 0);
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: hsla(0, 0%, 0%, 0);
+  content: "";
+}
+
 .ant-layout .trigger {
   font-size: 18px;
   line-height: 64px;

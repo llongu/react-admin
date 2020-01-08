@@ -1,6 +1,7 @@
-import React, { FormEvent, ReactElement } from "react"
+import React, { FormEvent, ReactElement, useState, useContext } from "react"
 import { Form, Icon, Input, Button, message } from "antd"
 import { FormComponentProps } from "antd/es/form"
+import AppContext from "@/models/context"
 import { History } from "history"
 
 interface LoginProps extends FormComponentProps {
@@ -8,19 +9,23 @@ interface LoginProps extends FormComponentProps {
 }
 
 const loginForm = (props: LoginProps): ReactElement<HTMLElement> => {
-  let loginStatus = false
+  const [loginStatus, setLoginStatus] = useState(false)
+  const { changeLoginStatus } = useContext(AppContext)
   const handleSubmit = (e: FormEvent): void => {
-    loginStatus = true
+    setLoginStatus(true)
     e.preventDefault()
     props.form.validateFields((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values)
         if (values.username === "admin" && values.password === "123456") {
           localStorage.setItem("login", "true")
+          changeLoginStatus(true)
           message.success("登录成功")
-          props.history.push("/")
         } else {
           message.error("用户名或密码错误")
+          setTimeout(() => {
+            setLoginStatus(false)
+          }, 500)
         }
       }
     })

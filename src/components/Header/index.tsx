@@ -7,12 +7,13 @@ import AppContext from "@/models/context"
 import { RouteComponentProps } from "react-router-dom"
 
 const Headers = (props: RouteComponentProps): ReactElement<HTMLElement> => {
-  const { siderCollapsed, changeSiderCollapsed } = useContext(AppContext)
+  const { siderCollapsed, changeSiderCollapsed, changeLoginStatus } = useContext(AppContext)
   const toggle = (): void => {
     changeSiderCollapsed(!siderCollapsed)
   }
   const logOut = (): void => {
     localStorage.setItem("login", "")
+    changeLoginStatus(false)
     props.history.push("/login")
   }
   const menuHeaderDropdown = (
