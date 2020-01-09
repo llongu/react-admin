@@ -1,211 +1,219 @@
 import React, { useContext, ReactElement } from "react"
 import AppContext from "@/models/context"
-import { Table } from "antd"
+import { Table, Button } from "antd"
 import Style from "./index.less"
-// Suspense
-// function go() {
-//   return new Promise(resolve => {
-//     setTimeout(() => {
-//       resolve('3秒后展示 Suspense 包裹效果')
-//     }, 3000)
-//   })
-// }
-// let num = 0
+import axios from "axios"
 
 const columns = [
   {
     title: "源",
-    dataIndex: "name"
+    dataIndex: "url"
   },
   {
     title: "请求地址",
-    dataIndex: "age"
+    dataIndex: "name",
+    width: 300
   },
   {
     title: "请求方式",
-    dataIndex: "address2"
+    dataIndex: "method"
   },
   {
     title: "请求时间",
-    dataIndex: "address3"
-  },
-  {
-    title: "请求参数",
-    dataIndex: "address4"
-  },
-  {
-    title: "返回状态",
-    dataIndex: "address5"
+    dataIndex: "time"
   },
   {
     title: "http协议",
-    dataIndex: "address6"
+    dataIndex: "nextHopProtocol"
   },
   {
     title: "资源类型",
-    dataIndex: "address7"
+    dataIndex: "type"
   },
   {
     title: "资源大小",
-    dataIndex: "address8"
+    dataIndex: "decodedBodySize"
   },
   {
     title: "耗时",
-    dataIndex: "address9"
+    dataIndex: "duration"
   }
 ]
 
 const columns2 = [
   {
     title: "源",
-    dataIndex: "name"
+    dataIndex: "resourceUrl",
+    render: (text, record): string => record.data.resourceUrl
   },
   {
     title: "错误行",
-    dataIndex: "age"
+    dataIndex: "line",
+    render: (text, record): string => record.data.line
   },
   {
     title: "错误列",
-    dataIndex: "address1"
+    dataIndex: "col",
+    render: (text, record): string => record.data.col
   },
   {
     title: "错误类型",
-    dataIndex: "address2"
+    dataIndex: "n"
   },
   {
     title: "错误信息",
-    dataIndex: "address3"
+    dataIndex: "msg",
+    width: 400,
+    ellipsis: true
   },
   {
     title: "时间",
-    dataIndex: "address4"
+    dataIndex: "t"
   }
 ]
 
 const columns3 = [
   {
     title: "源",
-    dataIndex: "name"
+    dataIndex: "resourceUrl",
+    render: (text, record): string => record.data.resourceUrl
   },
   {
     title: "资源类型",
-    dataIndex: "age"
+    dataIndex: "target",
+    render: (text, record): string => record.data.target
   },
+
   {
     title: "错误类型",
-    dataIndex: "address1"
+    dataIndex: "n"
   },
   {
     title: "错误信息",
-    dataIndex: "address3"
+    dataIndex: "msg"
   },
   {
     title: "时间",
-    dataIndex: "address4"
+    dataIndex: "t"
   }
 ]
 
 const columns4 = [
   {
     title: "源",
-    dataIndex: "name"
+    dataIndex: "resourceUrl",
+    render: (text, record): string => record.data.resourceUrl
   },
   {
     title: "请求类型",
-    dataIndex: "age"
+    dataIndex: "method"
+  },
+  {
+    title: "错误状态",
+    dataIndex: "status",
+    render: (text, record): number => record.data.status
   },
   {
     title: "错误类型",
-    dataIndex: "address1"
+    dataIndex: "n"
   },
   {
     title: "错误信息",
-    dataIndex: "address3"
+    dataIndex: "msg"
   },
   {
     title: "时间",
-    dataIndex: "address4"
+    dataIndex: "t"
   }
 ]
 
 const Home = (): ReactElement<HTMLElement> => {
-  // Provider set value, useContext or  <Consumer>{(value)=>{ get... }}</Consumer> getValue
   const { PerformanceData, performanceSource } = useContext(AppContext)
-  const { performanceList } = performanceSource
-  // function performance_set({ type = false, performance = false }) {
-  //   if (!performance || type !== 1) return
-
-  //   const performance_list = document.querySelectorAll('.performance_list li')
-  //   performance_list.forEach(item => {
-  //     const p = item.querySelector('p');
-  //     const text_name = item.querySelector('p').innerText;
-  //     if (performance.hasOwnProperty(text_name)) {
-  //       p.innerText = Number(performance[text_name]) / 1000 + ' s'
-  //     }
-  //   })
-  // }
+  const { performanceList, resourceList, errorList } = performanceSource
   return (
     <>
       <h3>页面性能列表</h3>
       <ul>
-        <span>首次绘制时间：{PerformanceData.FP} </span>
-        <span>首次内容绘制时间：{PerformanceData.FCP} </span>
+        <span>
+          首次绘制时间：<strong>{PerformanceData.FP}</strong>
+        </span>
+        <span>
+          首次内容绘制时间：<strong>{PerformanceData.FCP}</strong>
+        </span>
       </ul>
       <ul className={Style["performance_list"]}>
         <li>
           页面准备耗时:
-          <p>{performanceList.radt}</p>
+          <strong> {performanceList.radt}</strong>
         </li>
         <li>
           重定向耗时:
-          <p>rdit</p>
+          <strong> {performanceList.rdit}</strong>
         </li>
         <li>
           DNS解析耗时:
-          <p>dnst</p>
+          <strong> {performanceList.dnst}</strong>
         </li>
         <li>
           TCP连接耗时:
-          <p>tcpt</p>
+          <strong> {performanceList.tcpt}</strong>
         </li>
         <li>
           白屏耗时:
-          <p>wit</p>
+          <strong> {performanceList.wit}</strong>
         </li>
         <li>
           请求耗时:
-          <p>reqt</p>
+          <strong> {performanceList.reqt}</strong>
         </li>
         <li>
           unload耗时:
-          <p>uodt</p>
+          <strong> {performanceList.uodt}</strong>
         </li>
         <li>
           DOM渲染耗时:
-          <p>domt</p>
+          <strong> {performanceList.domt}</strong>
         </li>
         <li>
           解析DOM耗时:
-          <p>andt</p>
+          <strong> {performanceList.andt}</strong>
         </li>
         <li>
           页面onload耗时:
-          <p>lodt</p>
+          <strong> {performanceList.lodt}</strong>
         </li>
       </ul>
 
       <h3>页面资源列表</h3>
-      <Table columns={columns} dataSource={[]} />
+      <Table columns={columns} dataSource={resourceList} scroll={{ x: true }} rowKey={(record, index): string => index.toString()} />
 
       <h3>错误资源列表</h3>
       <h4>执行错误</h4>
-      <Table columns={columns2} dataSource={[]} />
+      <Table columns={columns2} dataSource={errorList.js} scroll={{ x: true }} rowKey={(record, index): string => index.toString()} />
 
       <h4>资源错误</h4>
-      <Table columns={columns3} dataSource={[]} />
+      <Table columns={columns3} dataSource={errorList.resource} scroll={{ x: true }} rowKey={(record, index): string => index.toString()} />
 
       <h4>请求错误</h4>
-      <Table columns={columns4} dataSource={[]} />
+      <Table columns={columns4} dataSource={errorList.ajax} scroll={{ x: true }} rowKey={(record, index): string => index.toString()} />
+
+      <Button
+        type="primary"
+        onClick={(): void => {
+          Performance.addError()
+        }}
+      >
+        测试执行错误
+      </Button>
+      <Button type="primary">测试资源加载错误</Button>
+      <Button
+        type="primary"
+        onClick={(): void => {
+          axios.post("/api/test/error")
+        }}
+      >
+        测试请求错误
+      </Button>
     </>
   )
 }

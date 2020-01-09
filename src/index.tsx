@@ -5,21 +5,21 @@ import ErrorBoundary from "@/components/ErrorBoundary" // error components
 
 import AppContext from "@/models/context"
 import { PerformanceData, Performance, PerformanceSet } from "@/models/performance"
-
+// PerformanceSource 存储 防止setState 被重置
+let initPerformanceSource = {
+  performanceList: {},
+  resourceList: [],
+  errorList: {
+    js: [],
+    resource: [],
+    ajax: []
+  }
+}
 const App = (): ReactElement<HTMLElement> => {
-  const [siderCollapsed, setsiderCollapsed] = useState(false)
+  const [siderCollapsed, setsiderCollapsed] = useState(true)
   const [drawerSettingModal, setDrawerSetting] = useState(true)
   const [loginStatus, setLoginStatus] = useState(!!localStorage.getItem("login"))
-
-  const [performanceSource, setPerformanceSource] = useState({
-    performanceList: {},
-    resourceList: [],
-    errorList: {
-      js: [],
-      resource: [],
-      ajax: []
-    }
-  })
+  const [performanceSource, setPerformanceSource] = useState(initPerformanceSource)
 
   useEffect(() => {
     Performance(
@@ -28,9 +28,10 @@ const App = (): ReactElement<HTMLElement> => {
       },
       function(data: object) {
         // 去掉 则上报 Your API address
-        console.log(data)
-        const newData = PerformanceSet(performanceSource, data)
-        console.warn(newData)
+        // console.log(data)
+        const newData = PerformanceSet(initPerformanceSource, data)
+        console.log(newData)
+        initPerformanceSource = newData
         setPerformanceSource(newData)
       }
     )

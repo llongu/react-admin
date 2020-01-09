@@ -1,4 +1,13 @@
 import { Performance } from "web-report"
+interface PerformanceProps {
+  performanceList: object
+  resourceList: Array<object>
+  errorList: {
+    js: Array<object>
+    resource: Array<object>
+    ajax: Array<object>
+  }
+}
 
 const PerformanceData = {
   FP: "",
@@ -27,29 +36,37 @@ observer.observe({
   entryTypes: ["paint", "longtask"]
 })
 
-const PerformanceSet = (oldData, newData): object => {
+const PerformanceSet = (oldData, newData): PerformanceProps => {
   const data = {
-    performanceList: {},
-    resourceList: [],
+    performanceList: { ...oldData.performanceList },
+    resourceList: [...oldData.resourceList],
     errorList: {
       js: [],
       resource: [],
-      ajax: []
+      ajax: [],
+      ...oldData.errorList
     }
   }
-  const { url = "", time = "", type = false, performance = false, resourceList = false, errorList } = newData
+
+  const { url = "", time = "", type = false, performance = false, resourceList, errorList } = newData
   if (performance && type === 1) {
+    Object.keys(performance).forEach(item => {
+      performance[item] = Number(performance[item]) / 1000 + " s"
+    })
     data.performanceList = { ...oldData.performanceList, ...performance }
   }
   if (resourceList && resourceList.length) {
-    data.resourceList = [...oldData.resourceList, ...resourceList]
-    data.resourceList.forEach(item => {
+    resourceList.forEach(item => {
       item.url = url
-      item.time = new Date(time)
+      item.time = new Date(time - Number(item.duration)).toString()
+      item.decodedBodySize = (item.decodedBodySize / 1000 / 1024).toFixed(2) + " M"
+      item.duration = (item.duration / 1000).toFixed(2) + " s"
     })
+    data.resourceList = [...oldData.resourceList, ...resourceList]
   }
   if (errorList && errorList.length) {
     errorList.forEach(item => {
+      item.t = new Date(item.t).toString()
       if (item.n === "js") {
         data.errorList.js = [...oldData.errorList.js, ...errorList]
       } else if (item.n === "resource") {

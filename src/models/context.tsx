@@ -2,7 +2,15 @@ import React from "react"
 
 const AppContext = React.createContext({
   PerformanceData: { FP: "", FCP: "" },
-  performanceSource: {},
+  performanceSource: {
+    performanceList: {},
+    resourceList: [],
+    errorList: {
+      js: [],
+      resource: [],
+      ajax: []
+    }
+  },
   siderCollapsed: false, // 菜单收缩
   changeSiderCollapsed: (value: boolean): void => {
     this.siderCollapsed = value
