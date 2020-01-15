@@ -8,7 +8,7 @@ interface LoginProps extends FormComponentProps {
   history: History
 }
 
-const loginForm = (props: LoginProps): ReactElement<HTMLElement> => {
+const Login = (props?: LoginProps): ReactElement<HTMLElement> => {
   const [loginStatus, setLoginStatus] = useState(false)
   const { changeLoginStatus } = useContext(AppContext)
   const handleSubmit = (e: FormEvent): void => {
@@ -53,5 +53,4 @@ const loginForm = (props: LoginProps): ReactElement<HTMLElement> => {
     </Form>
   )
 }
-
-export default Form.create({ name: "login" })(loginForm)
+export default Form.create({ name: "login" })(Login)

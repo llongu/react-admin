@@ -279,6 +279,7 @@ module.exports = {
     ],
     "array-bracket-spacing": [2, "never"],
     "@typescript-eslint/no-explicit-any": [1],
+    "@typescript-eslint/no-empty-function": 0,
     "space-before-function-paren": 0
   }
 }
