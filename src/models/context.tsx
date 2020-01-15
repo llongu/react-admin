@@ -2,7 +2,18 @@ import React from "react"
 const AppContext = React.createContext({
   PerformanceData: { FP: "", FCP: "" },
   performanceSource: {
-    performanceList: {},
+    performanceList: {
+      radt: "",
+      rdit: "",
+      dnst: "",
+      tcpt: "",
+      wit: "",
+      reqt: "",
+      uodt: "",
+      domt: "",
+      andt: "",
+      lodt: ""
+    },
     resourceList: [],
     errorList: {
       js: [],
@@ -11,11 +22,17 @@ const AppContext = React.createContext({
     }
   },
   siderCollapsed: false, // 菜单收缩
-  changeSiderCollapsed: () => {},
+  changeSiderCollapsed: (status: boolean) => {
+    this.siderCollapsed = status
+  },
   drawerSettingModal: false, // 设置搜索
-  changeDrawerSetting: () => {},
+  changeDrawerSetting: (status: boolean) => {
+    this.drawerSettingModal = status
+  },
   loginStatus: false, // 登录状态
-  changeLoginStatus: () => {}
+  changeLoginStatus: (status: boolean) => {
+    this.loginStatus = status
+  }
 })
 
 export default AppContext

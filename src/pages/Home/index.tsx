@@ -126,7 +126,9 @@ const columns4 = [
     dataIndex: "t"
   }
 ]
-
+let Performance: {
+  addError: Function
+}
 const Home = (): ReactElement<HTMLElement> => {
   const { PerformanceData, performanceSource } = useContext(AppContext)
   const { performanceList, resourceList, errorList } = performanceSource
