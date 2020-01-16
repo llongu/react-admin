@@ -9,7 +9,9 @@
     "dev": "webpack-dev-server --config config/dev.js",
     "mock": "node mock/mock-serve.js",
     "lint": "eslint  src --ext .tsx ",
-    "test:e2e": "jest ./tests/e2e/*"
+    "test:e2e": "jest ./tests/e2e/*",
+    "test:unit": "jest ./tests/unit/*",
+    "test": " jest"
   },
   "keywords": [],
   "author": "",

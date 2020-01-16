@@ -53,4 +53,4 @@ const Login = (props?: LoginProps): ReactElement<HTMLElement> => {
     </Form>
   )
 }
-export default Form.create({ name: "login" })(Login)
+export default Form.create({})(Login)
