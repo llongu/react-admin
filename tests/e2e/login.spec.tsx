@@ -1,6 +1,6 @@
 import React from "react"
-import { mount, shallow } from "enzyme"
-import Login from "../../src/pages/login"
+import { mount } from "enzyme"
+import Login from "@/pages/login"
 import { act } from "react-dom/test-utils"
 
 describe("<Login/>", () => {

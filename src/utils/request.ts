@@ -32,5 +32,7 @@ axios.interceptors.response.use(
     return Promise.reject(error)
   }
 )
-
+if (process.env.baseURL) {
+  axios.defaults.baseURL = process.env.baseURL
+}
 export default axios

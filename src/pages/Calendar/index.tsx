@@ -3,7 +3,7 @@ import { Calendar, Badge } from "antd"
 import { calendarQuery, calendarAddDay } from "@services/calendar"
 
 // click year render month
-function getMonthData(value): string {
+export function getMonthData(value): string {
   if (value.month() === 8) {
     return "9月"
   } else if (value.month() === 1) {
@@ -11,7 +11,7 @@ function getMonthData(value): string {
   }
 }
 
-function monthCellRender(value): ReactElement<HTMLElement> | null {
+export function monthCellRender(value): ReactElement<HTMLElement> | null {
   const num = getMonthData(value)
   return num ? (
     <div className="notes-month">

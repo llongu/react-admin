@@ -4,3 +4,5 @@ configure({
   adapter: new Adapter(),
   disableLifecycleMethods: false
 })
+//test mock servece
+process.env.baseURL = "http://localhost:3000/"
