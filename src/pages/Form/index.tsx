@@ -18,7 +18,6 @@ interface UserFormProps extends FormComponentProps {
   radioGroup: Array<string>
   checkboxGroup: Array<string>
 }
-
 // layout
 const formItemLayout = {
   labelCol: {
@@ -92,14 +91,6 @@ const MyForm = (props: FormComponentProps): ReactElement<HTMLElement> => {
     })
   }
 
-  const validateToNextPassword = (rule, value, callback): void => {
-    const { form } = props
-    if (value) {
-      form.validateFields(["confirm"], { force: true })
-    }
-    callback()
-  }
-
   const compareToFirstPassword = (rule, value, callback): void => {
     const { form } = props
     if (value && value !== form.getFieldValue("password")) {
@@ -159,10 +150,9 @@ const MyForm = (props: FormComponentProps): ReactElement<HTMLElement> => {
             rules: [{ required: true, message: "Please input your username!" }]
           })(<Input prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />} placeholder="Username" />)}
         </Form.Item>
-
         <Form.Item label="password" hasFeedback>
           {getFieldDecorator("password", {
-            rules: [{ required: true, message: "Please input your Password!" }, { validator: validateToNextPassword }]
+            rules: [{ required: true, message: "Please input your Password!" }]
           })(<Input.Password prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />} placeholder="Password"></Input.Password>)}
         </Form.Item>
         <Form.Item label="Confirm Password" hasFeedback>
@@ -192,12 +182,12 @@ const MyForm = (props: FormComponentProps): ReactElement<HTMLElement> => {
 
         <Form.Item label="Select[multiple]">
           {getFieldDecorator("selectMultiple", {
-            rules: [{ required: true, message: "Please select your favourite colors!", type: "array" }]
+            rules: [{ required: false, message: "Please select your favourite colors!", type: "array" }]
           })(
             <Select mode="multiple" placeholder="Please select favourite colors">
-              <Option value="red">Red</Option>
-              <Option value="green">Green</Option>
-              <Option value="blue">Blue</Option>
+              <Option value="0">Red</Option>
+              <Option value="1">Green</Option>
+              <Option value="2">Blue</Option>
             </Select>
           )}
         </Form.Item>
@@ -280,4 +270,4 @@ const MyForm = (props: FormComponentProps): ReactElement<HTMLElement> => {
   )
 }
 
-export default Form.create<UserFormProps>({})(MyForm)
+export default Form.create({})(MyForm)

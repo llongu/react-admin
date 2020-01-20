@@ -4,6 +4,14 @@ import { Table, Button } from "antd"
 import Style from "./index.less"
 import axios from "axios"
 
+export const ColumnsRenderResourceUrl = (text, record): string => record.data.resourceUrl
+export const ColumnsRenderLine = (text, record): string => record.data.line
+export const ColumnsRenderCol = (text, record): string => record.data.col
+export const ColumnsRenderTarget = (text, record): string => record.data.target
+export const ColumnsRenderStatus = (text, record): string => record.data.status
+
+export const TableRowKeyFn = (record, index): string => index.toString()
+
 const columns = [
   {
     title: "源",
@@ -44,17 +52,17 @@ const columns2 = [
   {
     title: "源",
     dataIndex: "resourceUrl",
-    render: (text, record): string => record.data.resourceUrl
+    render: ColumnsRenderResourceUrl
   },
   {
     title: "错误行",
     dataIndex: "line",
-    render: (text, record): string => record.data.line
+    render: ColumnsRenderLine
   },
   {
     title: "错误列",
     dataIndex: "col",
-    render: (text, record): string => record.data.col
+    render: ColumnsRenderCol
   },
   {
     title: "错误类型",
@@ -76,12 +84,12 @@ const columns3 = [
   {
     title: "源",
     dataIndex: "resourceUrl",
-    render: (text, record): string => record.data.resourceUrl
+    render: ColumnsRenderResourceUrl
   },
   {
     title: "资源类型",
     dataIndex: "target",
-    render: (text, record): string => record.data.target
+    render: ColumnsRenderTarget
   },
 
   {
@@ -102,7 +110,7 @@ const columns4 = [
   {
     title: "源",
     dataIndex: "resourceUrl",
-    render: (text, record): string => record.data.resourceUrl
+    render: ColumnsRenderResourceUrl
   },
   {
     title: "请求类型",
@@ -111,7 +119,7 @@ const columns4 = [
   {
     title: "错误状态",
     dataIndex: "status",
-    render: (text, record): number => record.data.status
+    render: ColumnsRenderStatus
   },
   {
     title: "错误类型",
@@ -126,6 +134,7 @@ const columns4 = [
     dataIndex: "t"
   }
 ]
+
 let Performance: {
   addError: Function
 }
@@ -187,20 +196,21 @@ const Home = (): ReactElement<HTMLElement> => {
       </ul>
 
       <h3>页面资源列表</h3>
-      <Table columns={columns} dataSource={resourceList} scroll={{ x: true }} rowKey={(record, index): string => index.toString()} />
+      <Table columns={columns} dataSource={resourceList} scroll={{ x: true }} rowKey={TableRowKeyFn} />
 
       <h3>错误资源列表</h3>
       <h4>执行错误</h4>
-      <Table columns={columns2} dataSource={errorList.js} scroll={{ x: true }} rowKey={(record, index): string => index.toString()} />
+      <Table columns={columns2} dataSource={errorList.js} scroll={{ x: true }} rowKey={TableRowKeyFn} />
 
       <h4>资源错误</h4>
-      <Table columns={columns3} dataSource={errorList.resource} scroll={{ x: true }} rowKey={(record, index): string => index.toString()} />
+      <Table columns={columns3} dataSource={errorList.resource} scroll={{ x: true }} rowKey={TableRowKeyFn} />
 
       <h4>请求错误</h4>
-      <Table columns={columns4} dataSource={errorList.ajax} scroll={{ x: true }} rowKey={(record, index): string => index.toString()} />
+      <Table columns={columns4} dataSource={errorList.ajax} scroll={{ x: true }} rowKey={TableRowKeyFn} />
 
       <Button
         type="primary"
+        id="error1"
         onClick={(): void => {
           Performance.addError()
         }}
@@ -210,6 +220,7 @@ const Home = (): ReactElement<HTMLElement> => {
       <Button type="primary">测试资源加载错误</Button>
       <Button
         type="primary"
+        id="error2"
         onClick={(): void => {
           axios.post("/api/test/error")
         }}

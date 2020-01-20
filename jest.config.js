@@ -6,6 +6,7 @@ module.exports = {
   ],
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
+    ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "jest-transform-stub"
   },
   testMatch: ['**/tests/**/*.(test|spec).ts?(x)'],
   setupFiles: ['./tests/setup.ts'],

@@ -1,6 +1,8 @@
 import React from "react"
 import { act } from "react-dom/test-utils"
 import { calendarQuery, calendarAddDay } from "@services/calendar"
+import { list2Query, listQuery } from "@services/list"
+import { tableQuery } from "@services/table"
 
 describe("Service", () => {
   it("test Calendar service ", async done => {
@@ -15,6 +17,22 @@ describe("Service", () => {
         expect(res.statusCode).toBe(200)
       })
     )
+    await act(() =>
+      listQuery({ pageIndex: 1, pageSize: 10 }).then((res: { statusCode: number }) => {
+        expect(res.statusCode).toBe(200)
+      })
+    )
+    await act(() =>
+      list2Query({ pageIndex: 1, pageSize: 10 }).then((res: { statusCode: number }) => {
+        expect(res.statusCode).toBe(200)
+      })
+    )
+    await act(() =>
+      tableQuery().then((res: { statusCode: number }) => {
+        expect(res.statusCode).toBe(200)
+      })
+    )
+
     done()
   })
 })
