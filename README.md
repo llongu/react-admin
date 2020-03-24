@@ -1,14 +1,14 @@
-## 基于 webpack+react+typescript+antd+hapi+web-report
+# 基于 webpack+react+typescript+antd+hapi+web-report
 
 实现：
-· webpack chunk 缓存
-· webpack externals 配置 加快打包速度
-· 性能上报，执行请求错误上报
-· 主题配置
+  · webpack chunk 缓存
+  · webpack externals 配置 加快打包速度
+  · 性能上报，执行请求错误上报
+  · 主题配置
 待实现:
-· 权限功能
-· redux 版本
-· mobx 版本
+  · 权限功能
+  · redux 版本
+  · mobx 版本
 
 - npm run dev 启动
 - npm run mock 接口服务
@@ -16,6 +16,7 @@
 - npm run lint 代码规范检查
 - npm run tests 代码测试
 
+```
 rt
 ├── config
 │ ├── dev.js ------------------------------ 生产环境
@@ -98,3 +99,4 @@ rt
 │ ├── ll.d.ts
 │ └── module.d.ts
 └── webpack.config.js ------------------------------ webpack 基础配置
+```
