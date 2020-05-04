@@ -4,26 +4,6 @@ import InfiniteScroll from "react-infinite-scroller"
 import Styles from "./list.less"
 import { list2Query } from "@services/list"
 
-export const handleInfiniteOnLoad = (listState, setListState, isUnInstall): void => {
-  setTimeout(async () => {
-    try {
-      const res: { list?: [] } = await list2Query({
-        pageIndex: listState.pageIndex,
-        pageSize: listState.pageSize
-      })
-      if (isUnInstall) return
-      setListState({
-        ...listState,
-        list: [...listState.list, ...(res.list || [])],
-        hasMore: listState.pageIndex < 3,
-        pageIndex: listState.pageIndex + 1
-      })
-      console.log(res)
-    } catch (error) {
-      console.error(error)
-    }
-  }, 1500)
-}
 const InfiniteListExample = (): ReactElement<HTMLElement> => {
   const [listState, setListState] = useState({
     hasMore: true,
@@ -39,12 +19,31 @@ const InfiniteListExample = (): ReactElement<HTMLElement> => {
     }
   }, [])
 
+  const handleInfiniteOnLoad = async (): Promise<void> => {
+    try {
+      const res: { list?: [] } = await list2Query({
+        pageIndex: listState.pageIndex,
+        pageSize: listState.pageSize
+      })
+      if (isUnInstall) return
+      setListState({
+        ...listState,
+        list: [...listState.list, ...(res.list || [])],
+        hasMore: listState.pageIndex < 3,
+        pageIndex: listState.pageIndex + 1
+      })
+      console.warn(res)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <>
       <div className={Styles["demo-infinite-container"]}>
         <InfiniteScroll
           pageStart={1}
-          loadMore={(): void => handleInfiniteOnLoad(listState, setListState, isUnInstall)}
+          loadMore={(): Promise<void> => handleInfiniteOnLoad()}
           hasMore={listState.hasMore}
           loader={
             <div className={Styles["demo-loading-container"]} key={0}>

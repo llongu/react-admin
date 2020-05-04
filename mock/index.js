@@ -3,7 +3,7 @@ const Mock = require("mockjs")
 const FilePath = __dirname + '/api/'
 const allFiles = fs.readdirSync(FilePath)
 
-function registerServer (server, allFiles) {
+function registerServer(server, allFiles) {
   allFiles.forEach(item => {
     let result = require(FilePath + item)
     Object.keys(result).forEach(n => {

@@ -217,7 +217,6 @@ const Home = (): ReactElement<HTMLElement> => {
       >
         测试执行错误
       </Button>
-      <Button type="primary">测试资源加载错误</Button>
       <Button
         type="primary"
         id="error2"

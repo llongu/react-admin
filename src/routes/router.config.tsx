@@ -36,26 +36,31 @@ export const authMap = {
       icon: "user",
       exact: true,
       component: Home,
+      code: "home-page",
       name: "首页"
     },
     {
       path: "/Calendar",
       icon: "user",
       component: Calendar,
+      code: "calendar-page",
       name: "日历"
     },
     {
       path: "/List",
       icon: "user",
       name: "列表",
+      code: "list-page",
       children: [
         {
           path: "/List/load-list",
+          code: "list-load-page",
           component: LoadList,
           name: "列表加载1"
         },
         {
           path: "/List/scroll-load-list",
+          code: "list-scroll-load-page",
           component: ScrollLoadList,
           name: "列表加载2"
         }
@@ -65,14 +70,36 @@ export const authMap = {
       path: "/Form",
       icon: "user",
       name: "表单",
+      code: "form-page",
       component: Form
     },
     {
       path: "/Table",
       icon: "user",
       name: "表格",
+      code: "table-page",
       component: Table
     }
+    // {
+    //   path: "/Table",
+    //   icon: "set",
+    //   name: "系统管理",
+    //   component: Table,
+    // children: [
+    //   {
+    //     path: "/List/load-list",
+    //     code: "list-load-page",
+    //     component: LoadList,
+    //     name: "菜单管理"
+    //   },
+    //   {
+    //     path: "/List/scroll-load-list",
+    //     code: "list-scroll-load-page",
+    //     component: ScrollLoadList,
+    //     name: "权限管理"
+    //   }
+    // ]
+    // }
   ]
 }
 export default [...baseMap, authMap]

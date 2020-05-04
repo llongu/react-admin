@@ -23,7 +23,7 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
       cacheGroups: {//cacheGroups是我们用来制定规则告诉 Webpack 应该如何组织 chunks 到打包输出文件的地方
         vendor: {//自定义打包规则，匹配所有node_modules所有包打包出对应包名文件
           test: /[\\/]node_modules[\\/]/,
-          name (module) {
+          name(module) {
             // get the name. E.g. node_modules/packageName/not/this/part.js
             // or node_modules/packageName
             const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];

@@ -82,7 +82,7 @@ export default (): ReactElement<HTMLElement> => {
         <List.Item actions={[<a key="list-loadmore-edit">edit</a>, <a key="list-loadmore-more">more</a>]}>
           <Skeleton avatar title={false} paragraph={{ rows: 3, width: [100, 200, 300] }} loading={item.loading} active>
             <List.Item.Meta
-              avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+              avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX-error.png" />}
               title={<a href="https://ant.design">{item.name.last}</a>}
               description="Ant Design, a design language for background applications, is refined by Ant UED Team"
             />

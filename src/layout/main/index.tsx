@@ -21,13 +21,14 @@ const Main = (props: MyRouteComponentProps): ReactElement<HTMLElement> => {
       <Layout>
         <Header {...props} />
         <Breadcrumb {...props} />
-
+        {/* loop render error */}
         <Content
           style={{
             margin: "24px 16px",
             padding: 24,
             background: "#fff",
-            minHeight: 280
+            minHeight: 280,
+            position: "relative"
           }}
         >
           {/* matchroutes */}

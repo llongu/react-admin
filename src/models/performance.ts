@@ -68,11 +68,11 @@ const PerformanceSet = (oldData, newData): PerformanceProps => {
     errorList.forEach(item => {
       item.t = new Date(item.t).toString()
       if (item.n === "js") {
-        data.errorList.js = [...oldData.errorList.js, ...errorList]
+        data.errorList.js = [...oldData.errorList.js, item]
       } else if (item.n === "resource") {
-        data.errorList.resource = [...oldData.errorList.resource, ...errorList]
+        data.errorList.resource = [...oldData.errorList.resource, item]
       } else if (item.n === "ajax") {
-        data.errorList.ajax = [...oldData.errorList.ajax, ...errorList]
+        data.errorList.ajax = [...oldData.errorList.ajax, item]
       }
     })
   }
