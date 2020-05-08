@@ -31,7 +31,7 @@ const AppContextProvider = (props: { children: ReactElement }): ReactElement => 
       {
         domain: "./api/webreport" // Your API address
       },
-      function(data: object) {
+      function (data: object) {
         // 去掉 则上报 Your API address
         // console.log(data)
         const newData = PerformanceSet(initPerformanceSource, data)

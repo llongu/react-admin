@@ -1,56 +1,72 @@
-import React, { FormEvent, ReactElement, useState, useContext } from "react"
-import { Form, Icon, Input, Button, message } from "antd"
-import { FormComponentProps } from "antd/es/form"
+import React, { useState, useContext, ReactElement } from "react"
+import { Form, Input, Button, message } from "antd"
 import AppContext from "@/models/context"
-import { History } from "history"
+import { UserOutlined, KeyOutlined } from "@ant-design/icons"
 
-interface LoginProps extends FormComponentProps {
-  history: History
-}
-
-const Login = (props?: LoginProps): ReactElement<HTMLElement> => {
+export const onFinishFn = (): {
+  onFinish: (values: { username: string; password: string }) => void
+  loginStatus: boolean
+} => {
   const [loginStatus, setLoginStatus] = useState(false)
   const { changeLoginStatus } = useContext(AppContext)
-  const handleSubmit = (e: FormEvent): void => {
+
+  const onFinish = (values: { username: string; password: string }): void => {
     setLoginStatus(true)
-    e.preventDefault()
-    props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log("Received values of form: ", values)
-        if (values.username === "admin" && values.password === "123456") {
-          localStorage.setItem("login", "true")
-          changeLoginStatus(true)
-          message.success("登录成功")
-        } else {
-          message.error("用户名或密码错误")
-          setTimeout(() => {
-            setLoginStatus(false)
-          }, 500)
-        }
-      }
-    })
+    if (values.username === "admin" && values.password === "123456") {
+      localStorage.setItem("login", "true")
+      changeLoginStatus(true)
+      message.success("登录成功")
+    } else {
+      message.error("用户名或密码错误")
+      setTimeout(() => {
+        setLoginStatus(false)
+      }, 500)
+    }
   }
 
-  const { getFieldDecorator } = props.form
+  return {
+    onFinish,
+    loginStatus
+  }
+}
+
+const Login = (): ReactElement => {
+  const onFinishFailed = (errorInfo: object): void => {
+    console.log("Failed:", errorInfo)
+  }
+
+  const { onFinish, loginStatus } = onFinishFn()
+
+  const layout = {
+    labelCol: { span: 8 },
+    wrapperCol: { span: 16 }
+  }
+  const tailLayout = {
+    wrapperCol: { offset: 8, span: 16 }
+  }
 
   return (
-    <Form onSubmit={handleSubmit} style={{ width: " 50%", margin: " 0 auto", marginTop: "300px", minWidth: "300px" }}>
-      <Form.Item>
-        {getFieldDecorator("username", {
-          rules: [{ required: true, message: "Please input your username!" }]
-        })(<Input prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />} placeholder="Username:admin" />)}
+    <Form
+      {...layout}
+      name="login"
+      initialValues={{ Username: "admin", Password: 123456 }}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+      style={{ width: 500, margin: "0 auto", marginTop: "15%" }}
+    >
+      <Form.Item label="Username" name="username" rules={[{ required: true, message: "Please input your username!" }]}>
+        <Input placeholder="Username:admin" prefix={<UserOutlined />} />
       </Form.Item>
-      <Form.Item>
-        {getFieldDecorator("password", {
-          rules: [{ required: true, message: "Please input your Password!" }]
-        })(<Input prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />} type="password" placeholder="Password:123456" />)}
+
+      <Form.Item label="Password" name="password" rules={[{ required: true, message: "Please input your password!" }]}>
+        <Input.Password placeholder="Password:123456" prefix={<KeyOutlined />} />
       </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit" className="login-form-button" loading={loginStatus}>
+      <Form.Item {...tailLayout}>
+        <Button type="primary" htmlType="submit" loading={loginStatus}>
           Log in
         </Button>
       </Form.Item>
     </Form>
   )
 }
-export default Form.create({})(Login)
+export default Login

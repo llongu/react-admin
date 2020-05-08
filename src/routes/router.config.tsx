@@ -20,6 +20,8 @@ const ScrollLoadList = LoadableComponent(() => import(/* webpackChunkName: "Scro
 const Calendar = LoadableComponent(() => import(/* webpackChunkName: "Calendar" */ "@/pages/Calendar"))
 const Form = LoadableComponent(() => import(/* webpackChunkName: "Form" */ "@/pages/Form"))
 const Table = LoadableComponent(() => import(/* webpackChunkName: "Table" */ "@/pages/Table"))
+const Menu = LoadableComponent(() => import(/* webpackChunkName: "System" */ "@/pages/System/menu"))
+const Premission = LoadableComponent(() => import(/* webpackChunkName: "System" */ "@/pages/System/premission"))
 
 export const baseMap = [
   {
@@ -79,27 +81,27 @@ export const authMap = {
       name: "表格",
       code: "table-page",
       component: Table
+    },
+    {
+      path: "/System",
+      icon: "set",
+      name: "系统管理",
+      code: "system-page",
+      children: [
+        {
+          path: "/System/menu",
+          code: "system-menu-page",
+          component: Menu,
+          name: "菜单管理"
+        },
+        {
+          path: "/System/premission",
+          code: "system-premission-page",
+          component: Premission,
+          name: "权限管理"
+        }
+      ]
     }
-    // {
-    //   path: "/Table",
-    //   icon: "set",
-    //   name: "系统管理",
-    //   component: Table,
-    // children: [
-    //   {
-    //     path: "/List/load-list",
-    //     code: "list-load-page",
-    //     component: LoadList,
-    //     name: "菜单管理"
-    //   },
-    //   {
-    //     path: "/List/scroll-load-list",
-    //     code: "list-scroll-load-page",
-    //     component: ScrollLoadList,
-    //     name: "权限管理"
-    //   }
-    // ]
-    // }
   ]
 }
 export default [...baseMap, authMap]

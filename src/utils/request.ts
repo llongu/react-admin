@@ -5,7 +5,7 @@ axios.defaults.timeout = 30000
 axios.defaults.baseURL = "/"
 
 axios.interceptors.request.use(
-  config => {
+  (config) => {
     config.headers["Content-Type"] = "application/json"
     // config.headers["Authorization"] = `Bearer `
     return config
@@ -16,7 +16,7 @@ axios.interceptors.request.use(
 )
 
 axios.interceptors.response.use(
-  response => {
+  (response) => {
     const { data } = response
     if (data.statusCode === 200) {
       return data
@@ -27,7 +27,7 @@ axios.interceptors.response.use(
   (error): Promise<object> => {
     notification["error"]({
       message: "response error",
-      description: error.message
+      description: error.message,
     })
     return Promise.reject(error)
   }

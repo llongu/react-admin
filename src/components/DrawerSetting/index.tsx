@@ -38,7 +38,7 @@ const DrawerSetting = (): ReactElement<HTMLElement> => {
         .then(() => {
           // alert("主题切换成功")
         })
-        .catch(error => {
+        .catch((error) => {
           // alert(`主题切换失败`)
           console.log(error)
         })

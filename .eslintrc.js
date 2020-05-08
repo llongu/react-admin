@@ -279,6 +279,7 @@ module.exports = {
     ],
     "array-bracket-spacing": [2, "never"],
     "@typescript-eslint/no-explicit-any": [1],
-    "space-before-function-paren": 0
+    "space-before-function-paren": 0,
+    "react/display-name": [0, { "ignoreTranspilerName": false }],
   }
 }

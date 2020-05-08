@@ -7,31 +7,28 @@ describe("<MyForm/>", () => {
   const wrapper = mount(<MyForm />)
 
   it("test MyForm  ", () => {
-    expect(wrapper.find("Form")).toHaveLength(1)
+    expect(wrapper.find("form")).toHaveLength(1)
 
     wrapper.find("input#username").simulate("change", {
-      target: { value: "admin" }
+      target: { value: "admin" },
     })
     wrapper.find("input#password").simulate("change", {
-      target: { value: "123456" }
+      target: { value: "123456" },
     })
     wrapper.find("input#confirm").simulate("change", {
-      target: { value: "123" }
+      target: { value: "err" },
     })
-    wrapper.find("Form").simulate("submit")
+    wrapper.find("form").simulate("submit")
 
     wrapper.find("input#confirm").simulate("change", {
-      target: { value: "123456" }
+      target: { value: "123456" },
     })
-    wrapper.find("input#phone").simulate("change", {
-      target: { value: "123" }
+    wrapper.find("input#date").simulate("click", {
+      target: { value: [1588833990862, 1588833990862] },
     })
-    wrapper.find("input#numbers").simulate("change", {
-      target: { value: "11" }
-    })
-    wrapper.find("input#captcha").simulate("change", {
-      target: { value: "123" }
-    })
-    wrapper.find("Form").simulate("submit")
+    wrapper.find("input#selects").simulate("change")
+    wrapper.find("div#opt1").simulate("click")
+
+    wrapper.find("form").simulate("submit")
   })
 })

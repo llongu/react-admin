@@ -1,10 +1,9 @@
-import React, { useState, ReactElement, FormEvent } from "react"
-import { Form, Button, Icon, Input, DatePicker, Select, Radio, Checkbox, Row, Col, Cascader, InputNumber } from "antd"
+import React, { ReactElement } from "react"
+import { Form, Button, Input, DatePicker, Select, Radio, Checkbox, Row, Col, Cascader, InputNumber } from "antd"
 const { RangePicker } = DatePicker
 const { Option } = Select
 
-import { FormComponentProps } from "antd/es/form"
-interface UserFormProps extends FormComponentProps {
+interface MyFormVal {
   username: string
   password: string
   confirm: string
@@ -19,7 +18,7 @@ interface UserFormProps extends FormComponentProps {
   checkboxGroup: Array<string>
 }
 // layout
-const formItemLayout = {
+const Layout = {
   labelCol: {
     xs: { span: 24 },
     sm: { span: 5 }
@@ -42,7 +41,6 @@ const tailFormItemLayout = {
   }
 }
 
-// data
 const residences = [
   {
     value: "zhejiang",
@@ -77,182 +75,98 @@ const residences = [
     ]
   }
 ]
-
-const MyForm = (props: FormComponentProps): ReactElement<HTMLElement> => {
-  const { getFieldDecorator } = props.form
-
-  // validator
-  const onSubmit = (e: FormEvent): void => {
-    e.preventDefault()
-    props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log("Received values of form: ", values)
-      }
-    })
-  }
-
-  const compareToFirstPassword = (rule, value, callback): void => {
-    const { form } = props
-    if (value && value !== form.getFieldValue("password")) {
-      callback("Two passwords that you enter is inconsistent!")
-    } else {
-      callback()
+export const ConfirmPwd = ({ getFieldValue }): { validator: (rule: object, value: string) => Promise<void> } => ({
+  validator(rule: object, value: string): Promise<void> {
+    if (!value || getFieldValue("password") === value) {
+      return Promise.resolve()
     }
+    return Promise.reject("The two passwords that you entered do not match!")
   }
+})
 
-  // data
-  const prefixSelector = getFieldDecorator("prefix", {
-    initialValue: "86"
-  })(
-    <Select style={{ width: 70 }}>
-      <Option value="86">+86</Option>
-      <Option value="87">+87</Option>
-    </Select>
-  )
-
-  // number change  validateStatus
-  function validatePrimeNumber(
-    number: number
-  ): {
-    validateStatus: "" | "success" | "error" | "warning" | "validating"
-    errorMsg: string
-  } {
-    if (number === 11) {
-      return {
-        validateStatus: "success",
-        errorMsg: null
-      }
-    }
-    return {
-      validateStatus: "error",
-      errorMsg: "The prime between 8 and 12 is 11!"
-    }
-  }
-
-  const [formNumbers, setState] = useState({
-    ...validatePrimeNumber(12),
-    value: 12
-  })
-
-  const handleNumberChange = (v: number): void => {
-    setState(oldState => ({
-      ...oldState,
-      ...validatePrimeNumber(v),
-      value: v
-    }))
+const MyForm = (): ReactElement => {
+  const onFinish = (values: MyFormVal): void => {
+    console.log(values)
   }
 
   return (
     <>
-      <Form {...formItemLayout} onSubmit={onSubmit}>
-        <Form.Item label="username" hasFeedback>
-          {getFieldDecorator("username", {
-            rules: [{ required: true, message: "Please input your username!" }]
-          })(<Input prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />} placeholder="Username" />)}
+      <Form {...Layout} initialValues={{}} onFinish={onFinish}>
+        <Form.Item label="Username" name="username" rules={[{ required: true, message: "Please input your username!" }]}>
+          <Input placeholder="Username" />
         </Form.Item>
-        <Form.Item label="password" hasFeedback>
-          {getFieldDecorator("password", {
-            rules: [{ required: true, message: "Please input your Password!" }]
-          })(<Input.Password prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />} placeholder="Password"></Input.Password>)}
+        <Form.Item label="Password" name="password" rules={[{ required: true, message: "Please input your password!" }]}>
+          <Input.Password placeholder="Password" />
         </Form.Item>
-        <Form.Item label="Confirm Password" hasFeedback>
-          {getFieldDecorator("confirm", {
-            rules: [{ required: true, message: "Please confirm your password!" }, { validator: compareToFirstPassword }]
-          })(<Input.Password prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />} placeholder="Password"></Input.Password>)}
+        <Form.Item label="confirm Password" name="confirm" rules={[{ required: true, message: "Please Confirm your password!" }, ConfirmPwd]}>
+          <Input.Password placeholder="confirm Password" />
         </Form.Item>
 
-        <Form.Item label="date">
-          {getFieldDecorator("date", {
-            rules: [{ required: false, message: "Please choose your date!" }]
-          })(<RangePicker renderExtraFooter={(): string => "extra footer"} style={{ width: "100%" }} />)}
+        <Form.Item label="date" name="date" rules={[{ required: false, message: "Please choose your date!" }]}>
+          <RangePicker />
         </Form.Item>
 
-        <Form.Item label="Select" hasFeedback>
-          {getFieldDecorator("selects", {
-            initialValue: "1",
-            rules: [{ required: false, message: "Please choose your Option!" }]
-          })(
-            <Select>
-              <Option value="1">Option 1</Option>
-              <Option value="2">Option 2</Option>
-              <Option value="3">Option 3</Option>
-            </Select>
-          )}
+        <Form.Item label="Select" name="selects" hasFeedback rules={[{ required: true, message: "Please select your Option!" }]}>
+          <Select placeholder="Please select a Option" id="selects_opt">
+            <Option value="1" id="opt1">
+              Option 1
+            </Option>
+            <Option value="2">Option 2</Option>
+            <Option value="3">Option 3</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item label="Select[multiple]" name="selectMultiple" rules={[{ required: false, message: "Please select your Option!", type: "array" }]}>
+          <Select mode="multiple" placeholder="Please select favourite colors">
+            <Option value="0">Red</Option>
+            <Option value="1">Green</Option>
+            <Option value="2">Blue</Option>
+          </Select>
         </Form.Item>
 
-        <Form.Item label="Select[multiple]">
-          {getFieldDecorator("selectMultiple", {
-            rules: [{ required: false, message: "Please select your favourite colors!", type: "array" }]
-          })(
-            <Select mode="multiple" placeholder="Please select favourite colors">
-              <Option value="0">Red</Option>
-              <Option value="1">Green</Option>
-              <Option value="2">Blue</Option>
-            </Select>
-          )}
+        <Form.Item label="Radio.Group" name="radioGroup">
+          <Radio.Group>
+            <Radio value="a">item 1</Radio>
+            <Radio value="b">item 2</Radio>
+            <Radio value="c">item 3</Radio>
+          </Radio.Group>
+        </Form.Item>
+        <Form.Item label="Checkbox.Group" name="checkboxGroup">
+          <Checkbox.Group style={{ width: "100%" }}>
+            <Row>
+              <Col span={8}>
+                <Checkbox value="A">A</Checkbox>
+              </Col>
+              <Col span={8}>
+                <Checkbox disabled value="B">
+                  B
+                </Checkbox>
+              </Col>
+              <Col span={8}>
+                <Checkbox value="C">C</Checkbox>
+              </Col>
+              <Col span={8}>
+                <Checkbox value="D">D</Checkbox>
+              </Col>
+            </Row>
+          </Checkbox.Group>
         </Form.Item>
 
-        <Form.Item label="Radio.Group">
-          {getFieldDecorator("radioGroup")(
-            <Radio.Group>
-              <Radio value="a">item 1</Radio>
-              <Radio value="b">item 2</Radio>
-              <Radio value="c">item 3</Radio>
-            </Radio.Group>
-          )}
+        <Form.Item label="Habitual Residence" name="residence" rules={[{ type: "array", required: false, message: "Please select your habitual residence!" }]}>
+          <Cascader options={residences} />
         </Form.Item>
 
-        <Form.Item label="Checkbox.Group">
-          {getFieldDecorator("checkboxGroup", {
-            initialValue: ["A", "B"]
-          })(
-            <Checkbox.Group style={{ width: "100%" }}>
-              <Row>
-                <Col span={8}>
-                  <Checkbox value="A">A</Checkbox>
-                </Col>
-                <Col span={8}>
-                  <Checkbox disabled value="B">
-                    B
-                  </Checkbox>
-                </Col>
-                <Col span={8}>
-                  <Checkbox value="C">C</Checkbox>
-                </Col>
-                <Col span={8}>
-                  <Checkbox value="D">D</Checkbox>
-                </Col>
-              </Row>
-            </Checkbox.Group>
-          )}
-        </Form.Item>
-
-        <Form.Item label="Habitual Residence">
-          {getFieldDecorator("residence", {
-            initialValue: ["zhejiang", "hangzhou", "xihu"],
-            rules: [{ type: "array", required: true, message: "Please select your habitual residence!" }]
-          })(<Cascader options={residences} />)}
-        </Form.Item>
-
-        <Form.Item label="Phone Number">
-          {getFieldDecorator("phone", {
-            rules: [{ required: true, message: "Please input your phone number!" }]
-          })(<Input addonBefore={prefixSelector} />)}
-        </Form.Item>
-
-        <Form.Item label="Prime between 8 & 12" validateStatus={formNumbers.validateStatus} help={formNumbers.errorMsg}>
-          {getFieldDecorator("numbers", {
-            initialValue: formNumbers.value,
-            rules: [{ required: false, message: "Please input your  number!" }]
-          })(<InputNumber min={8} max={12} onChange={handleNumberChange} />)}
+        <Form.Item label="InputNumber">
+          <Form.Item name="numbers" noStyle>
+            <InputNumber min={1} max={10} />
+          </Form.Item>
         </Form.Item>
 
         <Form.Item label="Captcha" extra="We must make sure that your are a human.">
           <Row gutter={8}>
             <Col span={12}>
-              {getFieldDecorator("captcha", {
-                rules: [{ required: true, message: "Please input the captcha you got!" }]
-              })(<Input />)}
+              <Form.Item name="captcha" noStyle rules={[{ required: false, message: "Please input the captcha you got!" }]}>
+                <Input />
+              </Form.Item>
             </Col>
             <Col span={12}>
               <Button>Get captcha</Button>
@@ -270,4 +184,4 @@ const MyForm = (props: FormComponentProps): ReactElement<HTMLElement> => {
   )
 }
 
-export default Form.create({})(MyForm)
+export default MyForm
