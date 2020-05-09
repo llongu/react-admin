@@ -32,25 +32,6 @@ function delMenu(menus: MenuProps[], delCode: string): void {
   }
 }
 
-/**
- * 角色权限管理
- * render menu
- * op setMenusCode, router filter setMenusCode code
- */
-export const getMenusCode = (): MenuProps[] => {
-  const menus = localStorage.getItem(meunCodeKey) || "[]"
-  return JSON.parse(menus)
-}
-export const setMenusCode = (menus: MenuProps[], menusCode: string[]): void => {
-  for (let i = 0; i < menus.length; i++) {
-    menusCode.push(menus[i].code)
-    if (menus[i].children) {
-      setMenusCode(menus[i].children, menusCode)
-    }
-  }
-  localStorage.setItem(meunCodeKey, JSON.stringify(menusCode))
-}
-
 export const getMenus = (): MenuProps[] => {
   const menus = localStorage.getItem(meunKey) || "[]"
   return JSON.parse(menus)
@@ -71,6 +52,13 @@ export const setMenus = (val: SetMenuProps): void => {
       num: 0
     })
   }
-  setMenusCode(menus, [])
   localStorage.setItem(meunKey, JSON.stringify(menus))
+}
+
+export const getMenusCode = (): string[] => {
+  const menus = localStorage.getItem(meunCodeKey) || "[]"
+  return JSON.parse(menus)
+}
+export const setMenusCode = (menusCode: string[]): void => {
+  localStorage.setItem(meunCodeKey, JSON.stringify(menusCode))
 }

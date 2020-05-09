@@ -1,9 +1,10 @@
 import React, { useState, ReactElement } from "react"
 import { Table, Button, Space } from "antd"
 import AddForm, { AddFormFn } from "./Menu/AddForm"
-import { MenuProps, MenuTableProps } from "./Menu/data"
-import { getMenus, setMenus } from "./Menu/utils"
-
+import { MenuProps, MenuTableProps } from "./data"
+import { getMenus, setMenus } from "./utils"
+// 白名单固定菜单
+const whiteCode = ["home-page", "system-page", "system-menu-page", "system-premission-page"]
 export default (): ReactElement<HTMLElement> => {
   const { show, hide, handleOk, visible, confirmLoading } = AddFormFn()
 
@@ -59,7 +60,7 @@ export default (): ReactElement<HTMLElement> => {
       title: "操作",
       dataIndex: "op",
       render: (text: string, record: MenuTableProps): ReactElement => {
-        return record.code === "system-page" ? (
+        return whiteCode.indexOf(record.code) > -1 ? (
           <a onClick={(): void => rowAdd(record)}>添加</a>
         ) : (
           <Space>

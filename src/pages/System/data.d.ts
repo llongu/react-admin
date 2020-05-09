@@ -19,7 +19,7 @@ export interface MenuTableProps {
 export interface AddFormProps {
   show?: () => void
   hide: () => void
-  handleOk: () => void
+  handleOk: () => Function
   visible: boolean
   confirmLoading: boolean
   parentInfo?: MenuTableProps

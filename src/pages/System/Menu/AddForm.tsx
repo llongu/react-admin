@@ -1,7 +1,7 @@
 import React, { useState, ReactElement } from "react"
 import { Form, Input, Modal } from "antd"
-import { setMenus, getMenus } from "./utils"
-import { AddFormProps, AddFormSubmit } from "./data"
+import { setMenus, getMenus } from "../utils"
+import { AddFormProps, AddFormSubmit } from "../data"
 
 export const AddFormFn = (): AddFormProps => {
   const [visible, setVisible] = useState(false)

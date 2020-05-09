@@ -2,6 +2,7 @@
 
 import Loading from "@/components/Loading"
 import Loadable from "react-loadable"
+import permission from "@/routes/permission"
 
 function LoadableComponent(loader): object {
   return Loadable({
@@ -21,7 +22,7 @@ const Calendar = LoadableComponent(() => import(/* webpackChunkName: "Calendar" 
 const Form = LoadableComponent(() => import(/* webpackChunkName: "Form" */ "@/pages/Form"))
 const Table = LoadableComponent(() => import(/* webpackChunkName: "Table" */ "@/pages/Table"))
 const Menu = LoadableComponent(() => import(/* webpackChunkName: "System" */ "@/pages/System/menu"))
-const Premission = LoadableComponent(() => import(/* webpackChunkName: "System" */ "@/pages/System/premission"))
+const RoleMenu = LoadableComponent(() => import(/* webpackChunkName: "System" */ "@/pages/System/roleMenu"))
 
 export const baseMap = [
   {
@@ -29,7 +30,7 @@ export const baseMap = [
     component: Login
   }
 ]
-export const authMap = {
+export const authMap = permission({
   component: LayoutMain,
   requiresAuth: true,
   children: [
@@ -95,13 +96,14 @@ export const authMap = {
           name: "菜单管理"
         },
         {
-          path: "/System/premission",
+          path: "/System/roleMenu",
           code: "system-premission-page",
-          component: Premission,
-          name: "权限管理"
+          component: RoleMenu,
+          name: "角色菜单"
         }
       ]
     }
   ]
-}
+})
+console.log(authMap)
 export default [...baseMap, authMap]
