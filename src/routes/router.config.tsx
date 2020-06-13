@@ -2,7 +2,7 @@
 
 import Loading from "@/components/Loading"
 import Loadable from "react-loadable"
-import permission from "@/routes/permission"
+// import permission from "@/routes/permission"
 
 function LoadableComponent(loader): object {
   return Loadable({
@@ -30,7 +30,8 @@ export const baseMap = [
     component: Login
   }
 ]
-export const authMap = permission({
+// permission(authMap)
+export const authMap = {
   component: LayoutMain,
   requiresAuth: true,
   children: [
@@ -104,6 +105,5 @@ export const authMap = permission({
       ]
     }
   ]
-})
-console.log(authMap)
+}
 export default [...baseMap, authMap]

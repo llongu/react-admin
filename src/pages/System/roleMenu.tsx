@@ -16,8 +16,6 @@ interface TreeProps {
   key: string
   children?: TreeProps[]
 }
-// 白名单固定菜单
-// const whiteCode = ["home-page", "system-page", "system-menu-page", "system-premission-page"]
 
 const FormatTree = (soucre: MenuProps[], treeData = []): TreeProps[] => {
   if (Array.isArray(soucre)) {
@@ -46,7 +44,7 @@ export default (): ReactElement<HTMLElement> => {
       dataIndex: "name"
     },
     {
-      title: "编码",
+      title: "账户",
       dataIndex: "code"
     }
   ]
@@ -70,7 +68,6 @@ export default (): ReactElement<HTMLElement> => {
   const [expandedKeys, setExpandedKeys] = useState([])
 
   const [checkedKeys, setCheckedKeys] = useState(getMenusCode())
-
   const onExpand = (expandedKeys: string[]): void => {
     setExpandedKeys(expandedKeys)
     setAutoExpandParent(false)
@@ -80,7 +77,9 @@ export default (): ReactElement<HTMLElement> => {
     setCheckedKeys(checkedKeys)
   }
   const saveMenuCode = (): void => {
-    setMenusCode(checkedKeys)
+    // 基础菜单
+    const baseMenusCode = ["home-page", "system-page", "system-menu-page", "system-premission-page", ...checkedKeys]
+    setMenusCode(baseMenusCode)
   }
 
   return (

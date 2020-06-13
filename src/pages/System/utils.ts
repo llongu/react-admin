@@ -55,10 +55,18 @@ export const setMenus = (val: SetMenuProps): void => {
   localStorage.setItem(meunKey, JSON.stringify(menus))
 }
 
-export const getMenusCode = (): string[] => {
-  const menus = localStorage.getItem(meunCodeKey) || "[]"
-  return JSON.parse(menus)
-}
 export const setMenusCode = (menusCode: string[]): void => {
   localStorage.setItem(meunCodeKey, JSON.stringify(menusCode))
+}
+
+export const getMenusCode = (): string[] => {
+  const menus = localStorage.getItem(meunCodeKey) || "[]"
+  const baseMenus = JSON.parse(menus)
+  if (!baseMenus.length) {
+    // 基础菜单
+    const baseMenusCode = ["home-page", "system-page", "system-menu-page", "system-premission-page"]
+    setMenusCode(baseMenusCode)
+    baseMenus.push(...baseMenusCode)
+  }
+  return baseMenus
 }

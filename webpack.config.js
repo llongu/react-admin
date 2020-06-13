@@ -3,7 +3,7 @@ const resolve = require('./config/resolve.config')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
-// speed-measure-webpack-plugin 分析打包耗时
+
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');//css 分离
 
 const themePlugin = require('./src/theme/theme.js')
@@ -18,9 +18,6 @@ module.exports = {
     filename: `js/[name].[${hashType}].js`,
     chunkFilename: `js/[name]-chunk.[${hashType}].js`
   },
-  // externals: {
-  //   react: 'react'
-  // }
   resolve,
   module: {
     rules: [
@@ -115,7 +112,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: true,
       minify: false,
-      template: './src/template/index.html'
+      template: ENV === 'development' ? './src/template/index.html' : './src/template/index-prd.html'
     }),
     themePlugin
   ]

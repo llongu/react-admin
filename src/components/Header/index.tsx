@@ -5,6 +5,7 @@ const { Header } = Layout
 import Styles from "./index.less"
 import AppContext from "@/models/context"
 import { RouteComponentProps } from "react-router-dom"
+import { UserOutlined } from "@ant-design/icons"
 
 const Headers = (props: RouteComponentProps): ReactElement<HTMLElement> => {
   const { siderCollapsed, changeSiderCollapsed, changeLoginStatus } = useContext(AppContext)
@@ -43,7 +44,7 @@ const Headers = (props: RouteComponentProps): ReactElement<HTMLElement> => {
       <Icon className="trigger" type={siderCollapsed ? "menu-unfold" : "menu-fold"} onClick={toggle} />
       <Dropdown className={Styles.dropdownMain} overlay={menuHeaderDropdown} overlayClassName="dropdown-menu">
         <span>
-          <Avatar size="large" icon="user" alt="avatar" className={Styles.antAvatar} />
+          <Avatar size="large" icon={<UserOutlined />} alt="avatar" className={Styles.antAvatar} />
           <span>test</span>
         </span>
       </Dropdown>

@@ -1,15 +1,17 @@
-# 基于 webpack+react+typescript+antd+hapi+web-report
+# 基于 webpack v4 + react16 hooks + typescript + antd v4 + hapi + web-report
 
 实现：
-  · webpack chunk 缓存
-  · webpack externals 配置 加快打包速度
-  · 性能上报，执行请求错误上报
-  · 主题配置
-待实现:
-  · 权限功能
-  · redux 版本
-  · mobx 版本
 
+    · webpack 样式分离 chunk 缓存
+    · webpack externals 配置 加快打包速度
+    . 登录
+    . 路由渲染
+    . 菜单管理添加与删除
+    · 页面性能上报，错误信息上报
+    · 主题配置
+    . 单元测试
+
+- npm install
 - npm run dev 启动
 - npm run mock 接口服务
 - npm run build 打包
@@ -23,7 +25,7 @@ rt
 │ ├── prod.js ------------------------------ 开发环境
 │ └── resolve.config.js
 ├── jest.config.js
-├── mock  
+├── mock
 │ ├── api
 │ │ ├── Calendar.js
 │ │ ├── List.js
@@ -56,9 +58,11 @@ rt
 │ │ ├── Home
 │ │ ├── List
 │ │ ├── login.tsx
+│ │ ├── System ------------------------------ 菜单管理
 │ │ └── Table
 │ ├── routes
 │ │ ├── index.tsx
+│ │ ├── permission.ts ------------------------------  路由权限管理
 │ │ └── router.config.tsx ------------------------------ 路由 map
 │ ├── services ------------------------------ api 管理
 │ │ ├── calendar.ts
@@ -72,7 +76,7 @@ rt
 │ │ └── variables.less
 │ └── utils
 │ ├── httpCode.ts
-│ ├── matchRoutes.tsx ------------------------------ 路由匹配  
+│ ├── matchRoutes.tsx ------------------------------ 路由匹配
 │ ├── reanderMenus.tsx ------------------------------ 菜单渲染
 │ ├── renderRoutes.tsx ------------------------------ 路由渲染
 │ └── request.ts
@@ -80,7 +84,7 @@ rt
 │ ├── img
 │ │ └── 1.jpg
 │ └── js
-├── tests  
+├── tests
 │ ├── e2e ------------------------------ 用户测试
 │ │ ├── 404.spec.tsx
 │ │ ├── calendar.spec.tsx

@@ -3,7 +3,7 @@ import { Table, Button, Space } from "antd"
 import AddForm, { AddFormFn } from "./Menu/AddForm"
 import { MenuProps, MenuTableProps } from "./data"
 import { getMenus, setMenus } from "./utils"
-// 白名单固定菜单
+// 白名单菜单
 const whiteCode = ["home-page", "system-page", "system-menu-page", "system-premission-page"]
 export default (): ReactElement<HTMLElement> => {
   const { show, hide, handleOk, visible, confirmLoading } = AddFormFn()

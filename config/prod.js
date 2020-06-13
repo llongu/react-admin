@@ -6,9 +6,15 @@ const baseWebpackConfig = require('../webpack.config.js');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+// speed-measure-webpack-plugin 分析打包耗时
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const smp = new SpeedMeasurePlugin();
 
-const prodWebpackConfig = merge(baseWebpackConfig, {
+const prodWebpackConfig = smp.wrap(merge(baseWebpackConfig, {
   mode: process.env.NODE_ENV,
+  externals: {
+    react: 'React'
+  },
   optimization: {
     minimize: true,
     minimizer: [],//允许你通过提供一个或多个定制过的 TerserPlugin 实例，覆盖默认压缩工具(minimizer)。
@@ -43,7 +49,7 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
     new CleanWebpackPlugin(),
 
   ]
-});
+}));
 
 webpack(prodWebpackConfig, (err, stats) => {
   if (err) throw err;

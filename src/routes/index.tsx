@@ -6,7 +6,6 @@ import AppContext from "@/models/context"
 
 const Routes = (): ReactElement<HTMLElement> => {
   const { loginStatus } = useContext(AppContext)
-
   return <Router>{renderRoutes(routesMap, loginStatus)}</Router>
 }
 
